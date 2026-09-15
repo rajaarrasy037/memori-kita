@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Galeri | Memori Raja & Nay</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/galeri.css">
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="space-background">
+        <div class="stars-small"></div>
+        <div class="stars-medium"></div>
+        <div class="stars-large"></div>
+
+        <div class="nebula-one"></div>
+        <div class="nebula-two"></div>
+        <div class="memory-glow"></div>
+    </div>
+
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+            <span>MEMORI KITA</span>
+        </a>
+
+        <nav class="nav-menu">
+
+            <a href="index.html" class="nav-link">
+                home
+            </a>
+
+            <a href="memori.html" class="nav-link">
+                memori
+            </a>
+
+            <a href="galeri.html" class="nav-link active">
+                galeri
+            </a>
+
+            <a href="pesan.html" class="nav-link">
+            pesan
+            </a>
+
+            <a href="tentang.html" class="nav-link">
+            tentang kita
+            </a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+    <button class="icon-button" id="searchButton" aria-label="Cari">
+        <span>⌕</span>
+    </button>
+
+    <button class="icon-button" id="settingsButton" aria-label="Pengaturan">
+        <span>⚙</span>
+    </button>
+
+    <button class="menu-button" id="menuButton" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</div>
+
+    </header>
+
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+
+    <button class="mobile-menu-close" id="closeMenu">
+        ×
+    </button>
+
+    <a href="index.html">home</a>
+
+    <a href="memori.html">memori</a>
+
+    <a href="galeri.html">galeri</a>
+
+    <a href="pesan.html">pesan</a>
+
+    <a href="tentang.html">tentang kita</a>
+
+</div>
+
+
+    <!-- SEARCH PANEL -->
+<div class="overlay-panel" id="searchPanel">
+
+    <div class="panel-content">
+
+        <button class="panel-close" data-close="searchPanel">
+            ×
+        </button>
+
+        <p class="panel-label">
+            cari kenangan
+        </p>
+
+        <h2>
+            sesuatu yang ingin<br>
+            kamu temukan?
+        </h2>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="cari kenangan..."
+                autocomplete="off"
+            >
+
+            <span>⌕</span>
+
+        </div>
+
+        <p class="search-info">
+            gunakan kata seperti judul, lokasi,
+            atau kategori kenangan
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- SETTINGS PANEL -->
+<div class="overlay-panel" id="settingsPanel">
+
+    <div class="panel-content settings-content">
+
+        <button
+            class="panel-close"
+            data-close="settingsPanel"
+            type="button"
+        >
+            ×
+        </button>
+
+        <p class="panel-label">
+            pengaturan
+        </p>
+
+        <h2>
+            atur pengalamanmu
+        </h2>
+
+
+        <div class="setting-item">
+
+            <div>
+
+                <strong>
+                    animasi bintang
+                </strong>
+
+                <small>
+                    mengaktifkan gerakan bintang
+                </small>
+
+            </div>
+
+            <label
+                class="switch"
+                for="starToggle"
+                aria-label="Aktifkan atau nonaktifkan animasi bintang"
+            >
+
+                <input
+                    type="checkbox"
+                    id="starToggle"
+                    name="starToggle"
+                    checked
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <div class="setting-item">
+
+            <div>
+
+                <strong>
+                    efek suara
+                </strong>
+
+                <small>
+                    efek suara interaksi
+                </small>
+
+            </div>
+
+            <label
+                class="switch"
+                for="soundToggle"
+                aria-label="Aktifkan atau nonaktifkan efek suara"
+            >
+
+                <input
+                    type="checkbox"
+                    id="soundToggle"
+                    name="soundToggle"
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+    <!-- GALERI -->
+    <main class="gallery-page">
+
+        <section class="gallery-intro">
+
+            <span class="gallery-eyebrow">
+                koleksi kenangan
+            </span>
+
+            <h1>
+                Galeri Kita
+            </h1>
+
+            <p>
+                beberapa potongan kecil dari perjalanan
+                yang pernah kita lewati bersama
+            </p>
+
+        </section>
+
+
+        <!-- FILTER -->
+        <section class="gallery-controls">
+
+            <div class="gallery-filter">
+
+                <button
+                    class="gallery-filter-button active"
+                    data-filter="all"
+                >
+                    semua
+                </button>
+
+                <button
+                    class="gallery-filter-button"
+                    data-filter="special"
+                >
+                    special
+                </button>
+
+                <button
+                    class="gallery-filter-button"
+                    data-filter="jalan-jalan"
+                >
+                    jalan-jalan
+                </button>
+
+                <button
+                    class="gallery-filter-button"
+                    data-filter="random"
+                >
+                    random
+                </button>
+
+                <button
+                    class="gallery-filter-button"
+                    data-filter="video"
+                >
+                    video
+                </button>
+
+            </div>
+
+            <span class="gallery-total">
+                <span id="galleryCount">0</span> kenangan
+            </span>
+
+        </section>
+
+
+        <!-- GRID GALERI -->
+        <section class="gallery-grid" id="galleryGrid">
+
+
+            <!-- FOTO 1 -->
+            <article
+                class="gallery-item"
+                data-category="special"
+                data-title="hari pertama"
+            >
+
+                <button
+                    class="gallery-card"
+                    data-type="image"
+                    data-src="images/memory-1.jpg"
+                    data-title="hari pertama cerita dimulai"
+                    data-description="sebuah foto yang menjadi bagian dari awal cerita kita"
+                >
+
+                    <div class="gallery-image">
+
+                        <img
+                            src="images/memory-1.jpg"
+                            alt="Hari pertama cerita dimulai"
+                        >
+
+                        <div class="gallery-overlay">
+
+                            <span class="gallery-number">
+                                01
+                            </span>
+
+                            <span class="gallery-open">
+                                ↗
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="gallery-info">
+
+                        <div>
+                            <span>special</span>
+                            <h2>hari pertama cerita dimulai</h2>
+                        </div>
+
+                        <span class="gallery-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </button>
+
+            </article>
+
+
+            <!-- FOTO 2 -->
+            <article
+                class="gallery-item"
+                data-category="jalan-jalan"
+                data-title="hari yang tidak direncanakan"
+            >
+
+                <button
+                    class="gallery-card"
+                    data-type="image"
+                    data-src="images/memory-2.jpg"
+                    data-title="hari yang tidak direncanakan"
+                    data-description="kadang momen terbaik justru datang tanpa direncanakan"
+                >
+
+                    <div class="gallery-image">
+
+                        <img
+                            src="images/memory-2.jpg"
+                            alt="Hari yang tidak direncanakan"
+                        >
+
+                        <div class="gallery-overlay">
+
+                            <span class="gallery-number">
+                                02
+                            </span>
+
+                            <span class="gallery-open">
+                                ↗
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="gallery-info">
+
+                        <div>
+                            <span>jalan-jalan</span>
+                            <h2>hari yang tidak direncanakan</h2>
+                        </div>
+
+                        <span class="gallery-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </button>
+
+            </article>
+
+
+            <!-- FOTO 3 -->
+            <article
+                class="gallery-item"
+                data-category="random"
+                data-title="sebuah hari sederhana"
+            >
+
+                <button
+                    class="gallery-card"
+                    data-type="image"
+                    data-src="images/memory-3.jpg"
+                    data-title="sebuah hari sederhana"
+                    data-description="hari sederhana yang akhirnya menjadi kenangan"
+                >
+
+                    <div class="gallery-image">
+
+                        <img
+                            src="images/memory-3.jpg"
+                            alt="Sebuah hari sederhana"
+                        >
+
+                        <div class="gallery-overlay">
+
+                            <span class="gallery-number">
+                                03
+                            </span>
+
+                            <span class="gallery-open">
+                                ↗
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="gallery-info">
+
+                        <div>
+                            <span>random</span>
+                            <h2>sebuah hari sederhana</h2>
+                        </div>
+
+                        <span class="gallery-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </button>
+
+            </article>
+
+
+            <!-- VIDEO CONTOH -->
+            <article
+                class="gallery-item gallery-video-item"
+                data-category="video"
+                data-title="potongan kecil dari kita"
+            >
+
+                <button
+                    class="gallery-card"
+                    data-type="video"
+                    data-src="videos/video-1.mp4"
+                    data-title="potongan kecil dari kita"
+                    data-description="sebuah video kecil yang menyimpan banyak cerita"
+                >
+
+                    <div class="gallery-image video-preview">
+
+                        <div class="video-placeholder">
+
+                            <span class="video-icon">
+                                ▶
+                            </span>
+
+                            <span>
+                                video kenangan
+                            </span>
+
+                        </div>
+
+                        <div class="gallery-overlay">
+
+                            <span class="gallery-number">
+                                04
+                            </span>
+
+                            <span class="gallery-open">
+                                ▶
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="gallery-info">
+
+                        <div>
+                            <span>video</span>
+                            <h2>potongan kecil dari kita</h2>
+                        </div>
+
+                        <span class="gallery-arrow">
+                            →
+                        </span>
+
+                    </div>
+
+                </button>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- EMPTY -->
+        <div class="gallery-empty" id="galleryEmpty">
+
+            <span>
+                ✦
+            </span>
+
+            <h3>
+                belum ada kenangan di sini
+            </h3>
+
+            <p>
+                coba pilih kategori lainnya
+            </p>
+
+        </div>
+
+
+        <!-- END -->
+        <section class="gallery-end">
+
+            <p>
+                masih banyak cerita yang belum tersimpan
+            </p>
+
+            <small>
+                dan mungkin akan terus bertambah...
+            </small>
+
+        </section>
+
+    </main>
+
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+
+        <button
+            class="lightbox-close"
+            id="lightboxClose"
+            aria-label="Tutup"
+        >
+            ×
+        </button>
+
+
+        <button
+            class="lightbox-prev"
+            id="lightboxPrev"
+            aria-label="Sebelumnya"
+        >
+            ‹
+        </button>
+
+
+        <div class="lightbox-content">
+
+            <div class="lightbox-media" id="lightboxMedia">
+            </div>
+
+            <div class="lightbox-caption">
+
+                <span id="lightboxNumber">
+                    01
+                </span>
+
+                <div>
+
+                    <h2 id="lightboxTitle">
+                        -
+                    </h2>
+
+                    <p id="lightboxDescription">
+                        -
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="lightbox-next"
+            id="lightboxNext"
+            aria-label="Berikutnya"
+        >
+            ›
+        </button>
+
+    </div>
+
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification">
+
+        <span id="notificationText">
+            -
+        </span>
+
+    </div>
+
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const closeMenu = document.getElementById("closeMenu");
+
+    menuButton.addEventListener("click", function () {
+        mobileMenu.classList.add("active");
+    });
+
+    closeMenu.addEventListener("click", function () {
+        mobileMenu.classList.remove("active");
+    });
+
+});
+</script>
+
+<script src="js/script.js"></script>
+    <script src="js/galeri.js"></script>
+
+</body>
+</html>

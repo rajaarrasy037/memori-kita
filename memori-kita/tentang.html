@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Tentang Kita | Memori Raja & Nay</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/tentang.css"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- BACKGROUND -->
+
+    <div class="space-background">
+
+        <div class="stars-small"></div>
+        <div class="stars-medium"></div>
+        <div class="stars-large"></div>
+
+        <div class="nebula-one"></div>
+        <div class="nebula-two"></div>
+
+        <div class="memory-glow"></div>
+
+    </div>
+
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+
+        <!-- LOGO -->
+
+        <a
+            href="index.html"
+            class="logo"
+        >
+
+            <span>
+                MEMORI KITA
+            </span>
+
+        </a>
+
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav-menu">
+
+            <a
+                href="index.html"
+                class="nav-link"
+            >
+                home
+            </a>
+
+
+            <a
+                href="memori.html"
+                class="nav-link"
+            >
+                memori
+            </a>
+
+
+            <a
+                href="galeri.html"
+                class="nav-link"
+            >
+                galeri
+            </a>
+
+
+            <a
+                href="pesan.html"
+                class="nav-link"
+            >
+                pesan
+            </a>
+
+
+            <a
+                href="tentang.html"
+                class="nav-link active"
+            >
+                tentang kita
+            </a>
+
+        </nav>
+
+
+
+        <!-- ACTION -->
+
+        <div class="nav-actions">
+
+    <button class="icon-button" id="searchButton" aria-label="Cari">
+        <span>⌕</span>
+    </button>
+
+    <button class="icon-button" id="settingsButton" aria-label="Pengaturan">
+        <span>⚙</span>
+    </button>
+
+    <button class="menu-button" id="menuButton" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+</div>
+
+    </header>
+
+
+
+    <!-- MOBILE MENU -->
+
+    <div class="mobile-menu" id="mobileMenu">
+
+    <button class="mobile-menu-close" id="closeMenu">
+        ×
+    </button>
+
+    <a href="index.html">home</a>
+    <a href="memori.html">memori</a>
+    <a href="galeri.html">galeri</a>
+    <a href="pesan.html">pesan</a>
+    <a href="tentang.html">tentang kita</a>
+
+</div>
+
+
+
+    <!-- SEARCH PANEL -->
+<div class="overlay-panel" id="searchPanel">
+
+    <div class="panel-content">
+
+        <button class="panel-close" data-close="searchPanel">
+            ×
+        </button>
+
+        <p class="panel-label">
+            cari kenangan
+        </p>
+
+        <h2>
+            sesuatu yang ingin<br>
+            kamu temukan?
+        </h2>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="cari kenangan..."
+                autocomplete="off"
+            >
+
+            <span>⌕</span>
+
+        </div>
+
+        <p class="search-info">
+            gunakan kata seperti judul, lokasi,
+            atau kategori kenangan
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- SETTINGS PANEL -->
+<div class="overlay-panel" id="settingsPanel">
+
+    <div class="panel-content settings-content">
+
+        <button
+            class="panel-close"
+            data-close="settingsPanel"
+            type="button"
+        >
+            ×
+        </button>
+
+        <p class="panel-label">
+            pengaturan
+        </p>
+
+        <h2>
+            atur pengalamanmu
+        </h2>
+
+
+        <div class="setting-item">
+
+            <div>
+
+                <strong>
+                    animasi bintang
+                </strong>
+
+                <small>
+                    mengaktifkan gerakan bintang
+                </small>
+
+            </div>
+
+            <label
+                class="switch"
+                for="starToggle"
+                aria-label="Aktifkan atau nonaktifkan animasi bintang"
+            >
+
+                <input
+                    type="checkbox"
+                    id="starToggle"
+                    name="starToggle"
+                    checked
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <div class="setting-item">
+
+            <div>
+
+                <strong>
+                    efek suara
+                </strong>
+
+                <small>
+                    efek suara interaksi
+                </small>
+
+            </div>
+
+            <label
+                class="switch"
+                for="soundToggle"
+                aria-label="Aktifkan atau nonaktifkan efek suara"
+            >
+
+                <input
+                    type="checkbox"
+                    id="soundToggle"
+                    name="soundToggle"
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+    <!-- CONTENT -->
+
+    <main class="about-page">
+
+
+        <!-- HERO -->
+
+        <section class="about-hero">
+
+            <div class="about-eyebrow">
+                TENTANG CERITA KITA
+            </div>
+
+
+            <h1>
+                Tentang Kita
+            </h1>
+
+
+            <p>
+                dua orang, satu cerita,
+                dan begitu banyak kenangan
+                yang ingin tetap disimpan
+            </p>
+
+        </section>
+
+
+
+        <!-- STORY -->
+
+        <section class="about-story">
+
+            <div class="story-image">
+
+                <div class="image-placeholder">
+
+                    <span>
+                        ✦
+                    </span>
+
+                    <small>
+                        foto kita
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="story-content">
+
+                <span class="section-number">
+                    01
+                </span>
+
+                <h2>
+                    bagaimana semuanya
+                    dimulai
+                </h2>
+
+                <p>
+                    setiap cerita pasti memiliki
+                    awal. begitu juga dengan cerita
+                    kita.
+                </p>
+
+                <p>
+                    mungkin awalnya tidak ada yang
+                    menyangka kalau pertemuan
+                    sederhana bisa membawa kita
+                    sampai sejauh ini.
+                </p>
+
+                <p>
+                    dari obrolan kecil, candaan
+                    sederhana, sampai berbagai
+                    kejadian yang akhirnya menjadi
+                    kenangan.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- TWO PEOPLE -->
+
+        <section class="people-section">
+
+            <div class="section-heading">
+
+                <span>
+                     DUA PASANGAN
+                </span>
+
+                <h2>
+                    di balik cerita ini
+                </h2>
+
+            </div>
+
+
+            <div class="people-grid">
+
+
+                <!-- ORANG 1 -->
+
+                <article class="person-card">
+
+                    <div class="person-photo">
+                        <img src="images/raja.jpg" alt="Raja">
+                    </div>
+
+
+                    <div class="person-info">
+
+                        <span>
+                            01
+                        </span>
+
+                        <h3>
+                            raja
+                        </h3>
+
+                        <p>
+                            seseorang yang ingin
+                            menyimpan setiap momen
+                            kecil menjadi bagian dari
+                            cerita yang tidak mudah
+                            dilupakan
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- ORANG 2 -->
+
+                <article class="person-card">
+
+                    <div class="person-photo">
+                        <img src="images/nay.jpg" alt="Nay">
+                    </div>
+
+
+                    <div class="person-info">
+
+                        <span>
+                            02
+                        </span>
+
+                        <h3>
+                            nay
+                        </h3>
+
+                        <p>
+                            seseorang yang membuat
+                            banyak hari biasa terasa
+                            sedikit lebih berarti
+                        </p>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- TIMELINE -->
+
+        <section class="about-timeline">
+
+            <div class="section-heading">
+
+                <span>
+                    PERJALANAN
+                </span>
+
+                <h2>
+                    dari waktu ke waktu
+                </h2>
+
+            </div>
+
+
+            <div class="journey">
+
+
+                <div class="journey-item">
+
+                    <div class="journey-number">
+                        01
+                    </div>
+
+                    <div>
+
+                        <span>
+                            awal
+                        </span>
+
+                        <h3>
+                            pertama kali bertemu
+                        </h3>
+
+                        <p>
+                            sebuah awal kecil yang
+                            akhirnya menjadi bagian
+                            penting dari cerita kita
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="journey-item">
+
+                    <div class="journey-number">
+                        02
+                    </div>
+
+                    <div>
+
+                        <span>
+                            semakin dekat
+                        </span>
+
+                        <h3>
+                            mulai banyak cerita
+                        </h3>
+
+                        <p>
+                            dari percakapan sederhana
+                            sampai cerita yang tidak
+                            pernah habis untuk dibahas
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="journey-item">
+
+                    <div class="journey-number">
+                        03
+                    </div>
+
+                    <div>
+
+                        <span>
+                            sekarang
+                        </span>
+
+                        <h3>
+                            masih menulis cerita
+                        </h3>
+
+                        <p>
+                            karena cerita kita belum
+                            selesai sampai di sini
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- QUOTE -->
+
+        <section class="about-quote">
+
+            <div class="quote-symbol">
+                “
+            </div>
+
+            <blockquote>
+                beberapa kenangan memang
+                terlalu indah untuk hanya
+                dibiarkan menjadi masa lalu
+            </blockquote>
+
+            <span>
+                — memori kita
+            </span>
+
+        </section>
+
+
+
+        <!-- END -->
+
+        <section class="about-end">
+
+            <h2>
+                dan cerita ini
+                masih terus berjalan
+            </h2>
+
+            <p>
+                mungkin suatu hari nanti,
+                kita akan kembali ke halaman ini
+                dan tersenyum melihat sejauh apa
+                perjalanan kita
+            </p>
+
+            <a
+                href="memori.html"
+                class="about-button"
+            >
+                lihat semua kenangan
+                <span>→</span>
+            </a>
+
+        </section>
+
+
+    </main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const closeMenu = document.getElementById("closeMenu");
+
+    menuButton.addEventListener("click", function () {
+        mobileMenu.classList.add("active");
+    });
+
+    closeMenu.addEventListener("click", function () {
+        mobileMenu.classList.remove("active");
+    });
+
+});
+</script>
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
