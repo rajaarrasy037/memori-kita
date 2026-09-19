@@ -558,8 +558,9 @@ if (randomButton) {
                 getSavedMemories();
 
             const allMemories = [
-                ...memories,
-                ...saved
+            ...memories,
+            ...cloudMemories,
+            ...saved
             ];
 
             if (!allMemories.length) {
@@ -1274,57 +1275,139 @@ document.addEventListener(
 
         function addMemoryToTimeline(memory) {
 
-            const timeline =
-                document.querySelector(
-                    ".timeline"
-                );
+    const timeline =
+        document.querySelector(".timeline");
 
-            if (!timeline) {
-                return;
-            }
-
-            if (memory.id) {
-
-    const existing =
-        timeline.querySelector(
-            `[data-cloud-id="${memory.id}"]`
-        );
-
-    if (existing) {
+    if (!timeline || !memory) {
         return;
     }
 
-}
 
-            const article =
-                document.createElement(
-                    "article"
-                );
+    /* ==============================
+       CEK DUPLIKAT SUPABASE
+    ============================== */
 
+    if (memory.id) {
 
-            article.className =
-                "memory-item reveal custom-memory-item";
+        const existing =
+            timeline.querySelector(
+                `[data-cloud-id="${memory.id}"]`
+            );
 
-            if (memory.id) {
+        if (existing) {
+            return;
+        }
 
-    article.dataset.cloudId =
-        memory.id;
-
-}
-
-
-            article.dataset.category =
-                memory.category || "random";
+    }
 
 
-            const date =
-                new Date(
-                    memory.date +
-                    "T00:00:00"
-                );
+    /* ==============================
+       BUAT ELEMENT
+    ============================== */
+
+    const article =
+        document.createElement("article");
+
+    article.className =
+        "memory-item reveal custom-memory-item";
 
 
-            const day =
+    if (memory.id) {
+
+        article.dataset.cloudId =
+            String(memory.id);
+
+    }
+
+
+    /* ==============================
+       DATA UNTUK FILTER & SEARCH
+    ============================== */
+
+    const category =
+        memory.category || "random";
+
+    const categoryName =
+        getCategoryName(category);
+
+    const location =
+        memory.location &&
+        memory.location.trim()
+            ? memory.location.trim()
+            : "tanpa lokasi";
+
+
+    article.dataset.category =
+        category;
+
+    article.dataset.title =
+        memory.title || "";
+
+    article.dataset.location =
+        location;
+
+
+    /* ==============================
+       NOMOR URUTAN
+    ============================== */
+
+    let memoryNumber =
+        Number(memory.number);
+
+
+    if (!Number.isFinite(memoryNumber)) {
+
+        const allNumbers = [
+
+            ...memories,
+
+            ...cloudMemories,
+
+            ...getSavedMemories()
+
+        ]
+        .map(item =>
+            Number(item?.number)
+        )
+        .filter(number =>
+            Number.isFinite(number)
+        );
+
+
+        memoryNumber =
+            allNumbers.length
+                ? Math.max(...allNumbers) + 1
+                : 1;
+
+    }
+
+
+    memoryNumber =
+        String(memoryNumber)
+            .padStart(2, "0");
+
+
+    /* ==============================
+       TANGGAL
+    ============================== */
+
+    let day = "--";
+    let month = "";
+    let year = "";
+
+
+    if (memory.date) {
+
+        const date =
+            new Date(
+                memory.date +
+                "T00:00:00"
+            );
+
+
+        if (!Number.isNaN(date.getTime())) {
+
+            day =
                 date.toLocaleDateString(
                     "id-ID",
                     {
@@ -1333,7 +1416,7 @@ document.addEventListener(
                 );
 
 
-            const month =
+            month =
                 date.toLocaleDateString(
                     "id-ID",
                     {
@@ -1342,7 +1425,7 @@ document.addEventListener(
                 );
 
 
-            const year =
+            year =
                 date.toLocaleDateString(
                     "id-ID",
                     {
@@ -1350,172 +1433,159 @@ document.addEventListener(
                     }
                 );
 
+        }
 
-            const categoryName =
-                getCategoryName(
-                    memory.category
-                );
+    }
 
 
-            article.innerHTML = `
+    /* ==============================
+       HTML KARTU
+       SAMA DENGAN KARTU BAWAAN
+    ============================== */
 
-                <div class="timeline-date">
+    article.innerHTML = `
+
+        <div class="timeline-date">
+
+            <span>
+                ${day}
+            </span>
+
+            <small>
+                ${month}<br>
+                ${year}
+            </small>
+
+        </div>
+
+
+        <div class="timeline-dot">
+
+            <span></span>
+
+        </div>
+
+
+        <div class="memory-card">
+
+            <div class="memory-image">
+
+                <img
+                    src="${escapeHTML(
+                        memory.image || ""
+                    )}"
+                    alt="${escapeHTML(
+                        memory.title ||
+                        "Kenangan"
+                    )}"
+                    onerror="this.parentElement.classList.add('image-empty')"
+                >
+
+                <div class="image-overlay">
 
                     <span>
-                        ${day}
+                        ${memoryNumber}
                     </span>
 
-                    <small>
-                        ${month}<br>
-                        ${year}
-                    </small>
+                </div>
+
+            </div>
+
+
+            <div class="memory-info">
+
+                <div class="memory-meta">
+
+                    <span>
+                        ✦ ${escapeHTML(
+                            categoryName
+                        )}
+                    </span>
+
+                    <span>
+                        📍 ${escapeHTML(
+                            location
+                        )}
+                    </span>
 
                 </div>
 
 
-                <div class="timeline-dot">
-
-                    <span></span>
-
-                </div>
-
-
-                <div class="memory-card">
-
-                    <div class="memory-image">
-
-                        <img
-                            src="${memory.image}"
-                            alt="${escapeHTML(
-                                memory.title
-                            )}"
-                        >
-
-                        <div class="image-overlay">
-
-                            <span>
-                                ✦ ${categoryName}
-                            </span>
-
-                        </div>
-
-                    </div>
+                <h2>
+                    ${escapeHTML(
+                        memory.title ||
+                        "Tanpa judul"
+                    )}
+                </h2>
 
 
-                    <div class="memory-info">
-
-                        <div class="memory-meta">
-
-                            <span>
-                                ${escapeHTML(
-                                    memory.location ||
-                                    "tanpa lokasi"
-                                )}
-                            </span>
-
-                            <span>•</span>
-
-                            <span>
-                                ${categoryName}
-                            </span>
-
-                        </div>
+                <p>
+                    ${escapeHTML(
+                        memory.description ||
+                        "sebuah kenangan yang tersimpan"
+                    )}
+                </p>
 
 
-                        <h2>
-                            ${escapeHTML(
-                                memory.title
-                            )}
-                        </h2>
+                <button
+                    class="read-memory"
+                    type="button"
+                >
+                    baca kenangan
+                    <span>→</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
 
 
-                        <p>
-                            ${escapeHTML(
-                                memory.description ||
-                                "sebuah kenangan yang tersimpan"
-                            )}
-                        </p>
+    /* ==============================
+       MASUKKAN KE TIMELINE
+    ============================== */
+
+    timeline.appendChild(
+        article
+    );
 
 
-                        <button
-                            class="read-memory"
-                            type="button"
-                        >
+    /* ==============================
+       BACA KENANGAN
+    ============================== */
 
-                            baca kenangan
-
-                            <span>→</span>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            `;
+    const readButton =
+        article.querySelector(
+            ".read-memory"
+        );
 
 
-            timeline.appendChild(
-                article
-            );
+    if (readButton) {
 
+        readButton.addEventListener(
+            "click",
+            () => {
 
-            /* tombol buka modal */
-
-            const readButton =
-                article.querySelector(
-                    ".read-memory"
-                );
-
-
-            if (readButton) {
-
-                readButton.addEventListener(
-                    "click",
-                    () => {
-
-                        openCustomMemory(
-                            memory
-                        );
-
-                    }
+                openCustomMemory(
+                    memory
                 );
 
             }
+        );
+
+    }
 
 
-            /* observer */
+    /* ==============================
+       ANIMASI
+    ============================== */
 
-            observer.observe(
-                article
-            );
+    observer.observe(
+        article
+    );
 
-
-            /* gambar */
-
-            const image =
-                article.querySelector(
-                    ".memory-image img"
-                );
-
-
-            if (image) {
-
-                image.addEventListener(
-                    "error",
-                    () => {
-
-                        console.error(
-                            "gambar kenangan gagal ditampilkan:",
-                            memory.image
-                        );
-
-                    }
-                );
-
-            }
-
-        }
+}
 
         /*  =====================================
             LOAD KENANGAN DARI SUPABASE
@@ -1693,7 +1763,7 @@ function renderBuiltInMemories() {
                     <div class="image-overlay">
 
                         <span>
-                            ${memory.meta.split("·")[0]}
+                            ${memory.number}
                         </span>
 
                     </div>
@@ -1704,11 +1774,22 @@ function renderBuiltInMemories() {
 
                     <div class="memory-meta">
 
-                        <span>
-                            ${memory.meta.split("📍")[1] || ""}
-                        </span>
+    <span>
+        ${escapeHTML(
+            memory.meta.split("·")[0].trim()
+        )}
+    </span>
 
-                    </div>
+    <span>
+        ${escapeHTML(
+            "📍 " +
+            (
+                memory.meta.split("📍")[1] || ""
+            ).trim()
+        )}
+    </span>
+
+</div>
 
                     <h2>
                         ${escapeHTML(memory.title)}
@@ -1782,124 +1863,95 @@ function renderBuiltInMemories() {
            BUKA MODAL CUSTOM
         ===================================== */
 
-        window.openCustomMemory =
-            function(memory) {
+        function openCustomMemory(memory) {
+    const modal = document.getElementById("memoryModal");
 
-                const memoryModal =
-                    document.getElementById(
-                        "memoryModal"
-                    );
+    if (!modal) return;
 
-                if (!memoryModal) {
-                    return;
-                }
+    const modalImage = document.getElementById("modalImage");
+    const modalNumber = document.getElementById("modalNumber");
+    const modalMeta = document.getElementById("modalMeta");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDate = document.getElementById("modalDate");
+    const modalDescription = document.getElementById("modalDescription");
 
+    // =========================
+    // DATA KENANGAN
+    // =========================
 
-                const image =
-                    document.getElementById(
-                        "modalImage"
-                    );
+    const categoryName = getCategoryName(
+        memory.category || "random"
+    );
 
-                const number =
-                    document.getElementById(
-                        "modalNumber"
-                    );
+    const location =
+        memory.location?.trim() || "tanpa lokasi";
 
-                const meta =
-                    document.getElementById(
-                        "modalMeta"
-                    );
+    // Nomor urutan
+    let number = Number(memory.number);
 
-                const title =
-                    document.getElementById(
-                        "modalTitle"
-                    );
+    if (!Number.isFinite(number)) {
+        number = 1;
+    }
 
-                const date =
-                    document.getElementById(
-                        "modalDate"
-                    );
-
-                const description =
-                    document.getElementById(
-                        "modalDescription"
-                    );
+    number = String(number).padStart(2, "0");
 
 
-                if (image) {
+    // =========================
+    // FOTO
+    // =========================
 
-                    image.src =
-                        memory.image;
-
-                    image.alt =
-                        memory.title;
-
-                }
+    modalImage.src = memory.image || "";
+    modalImage.alt = memory.title || "Kenangan";
 
 
-                if (number) {
+    // =========================
+    // NOMOR
+    // =========================
 
-                    number.textContent =
-                        "✦";
-
-                }
-
-
-                if (meta) {
-
-                    meta.textContent =
-                        `✦ ${
-                            getCategoryName(
-                                memory.category
-                            )
-                        } · 📍 ${
-                            memory.location ||
-                            "tanpa lokasi"
-                        }`;
-
-                }
+    modalNumber.textContent = number;
 
 
-                if (title) {
+    // =========================
+    // KATEGORI + LOKASI
+    // =========================
 
-                    title.textContent =
-                        memory.title;
-
-                }
-
-
-                if (date) {
-
-                    date.textContent =
-                        formatMemoryDate(
-                            memory.date
-                        );
-
-                }
+    modalMeta.textContent =
+        `✦ ${categoryName} · 📍 ${location}`;
 
 
-                if (description) {
+    // =========================
+    // JUDUL
+    // =========================
 
-                    description.textContent =
-                        memory.description ||
-                        "";
-
-                }
-
-
-                /* PENTING:
-                   modal memakai class OPEN,
-                   bukan ACTIVE */
-
-                memoryModal.classList.add(
-                    "open"
-                );
+    modalTitle.textContent =
+        memory.title || "Tanpa judul";
 
 
-                document.body.style.overflow =
-                    "hidden";
+    // =========================
+    // TANGGAL
+    // =========================
 
-            };
+    modalDate.textContent =
+        formatMemoryDate(memory.date);
+
+
+    // =========================
+    // CERITA
+    // =========================
+
+    modalDescription.textContent =
+        memory.description ||
+        "Sebuah kenangan yang tersimpan.";
+
+
+    // =========================
+    // BUKA MODAL
+    // =========================
+
+    modal.classList.add("open");
+
+    document.body.style.overflow = "hidden";
+}
 
 
         /* =====================================
