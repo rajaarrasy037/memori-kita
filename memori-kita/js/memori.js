@@ -18,39 +18,7 @@ const supabaseClient =
    MEMORY DATA
 ========================================= */
 
-const memories = [
-
-    {
-        number: "01",
-        image: "images/memory-1.jpg",
-        meta: "✦ special · 📍 sukabumi",
-        title: "hari pertama cerita dimulai",
-        date: "12 Januari 2025",
-        description:
-            "setiap perjalanan selalu punya satu titik awal. mungkin saat itu semuanya terlihat biasa saja, tapi tanpa disadari hari tersebut menjadi bagian dari cerita yang nantinya ingin selalu kita ingat."
-    },
-
-    {
-        number: "02",
-        image: "images/memory-2.jpg",
-        meta: "✦ jalan-jalan · 📍 bogor",
-        title: "hari yang tidak direncanakan",
-        date: "28 Februari 2025",
-        description:
-            "terkadang momen terbaik justru datang tanpa direncanakan. tidak perlu sesuatu yang besar, cukup sebuah hari sederhana yang akhirnya berubah menjadi kenangan yang menyenangkan."
-    },
-
-    {
-        number: "03",
-        image: "images/memory-3.jpg",
-        meta: "✦ random · 📍 rumah",
-        title: "sebuah hari sederhana",
-        date: "15 April 2025",
-        description:
-            "bukan tentang seberapa besar sebuah kejadian, tapi tentang bagaimana sebuah hari biasa bisa terasa begitu berarti ketika kita menjalaninya dengan orang yang tepat."
-    }
-
-];
+const memories = [];
 
 
 /* =========================================
@@ -2058,13 +2026,22 @@ function openCustomMemory(memory) {
 
 function openDeleteConfirm() {
 
-    if (!deleteConfirmModal) {
+    const confirmModal =
+        document.getElementById("deleteConfirmModal");
+
+    if (!confirmModal) {
+
+        console.error(
+            "deleteConfirmModal TIDAK DITEMUKAN!"
+        );
+
         return;
+
     }
 
-    deleteConfirmModal.classList.add("open");
+    confirmModal.classList.add("open");
 
-    deleteConfirmModal.setAttribute(
+    confirmModal.setAttribute(
         "aria-hidden",
         "false"
     );
@@ -2074,13 +2051,16 @@ function openDeleteConfirm() {
 
 function closeDeleteConfirm() {
 
-    if (!deleteConfirmModal) {
+    const confirmModal =
+        document.getElementById("deleteConfirmModal");
+
+    if (!confirmModal) {
         return;
     }
 
-    deleteConfirmModal.classList.remove("open");
+    confirmModal.classList.remove("open");
 
-    deleteConfirmModal.setAttribute(
+    confirmModal.setAttribute(
         "aria-hidden",
         "true"
     );
@@ -2204,7 +2184,7 @@ async function deleteCustomMemory() {
         ============================== */
 
         showMemoryNotification(
-            "kenangan berhasil dihapus ✦"
+            "kenangan berhasil dihapus"
         );
 
 
