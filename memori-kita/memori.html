@@ -1001,7 +1001,7 @@
     </div>
 
 
-    <!-- NOTIFICATION -->
+        <!-- NOTIFICATION -->
 
     <div
         class="notification"
@@ -1019,31 +1019,123 @@
     </div>
 
 
+    <!-- DELETE CONFIRMATION MODAL -->
+
+    <div
+        class="delete-confirm-modal"
+        id="deleteConfirmModal"
+        aria-hidden="true"
+    >
+
+        <div class="delete-confirm-box">
+
+            <div class="delete-confirm-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path d="M4 7h16"></path>
+                    <path d="M9 7V4h6v3"></path>
+                    <path d="M7 7l1 13h8l1-13"></path>
+                    <path d="M10 11v5"></path>
+                    <path d="M14 11v5"></path>
+                </svg>
+
+            </div>
+
+
+            <div class="delete-confirm-content">
+
+                <span class="delete-confirm-label">
+                    Hapus Kenangan
+                </span>
+
+                <h3>
+                    Hapus kenangan ini?
+                </h3>
+
+                <p>
+                    Foto dan data kenangan ini akan dihapus permanen.
+                </p>
+
+            </div>
+
+
+            <div class="delete-confirm-actions">
+
+                <button
+                    type="button"
+                    class="delete-cancel-btn"
+                    id="deleteCancelBtn"
+                >
+                    Batal
+                </button>
+
+
+                <button
+                    type="button"
+                    class="delete-confirm-btn"
+                    id="deleteConfirmBtn"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path d="M4 7h16"></path>
+                        <path d="M9 7V4h6v3"></path>
+                        <path d="M7 7l1 13h8l1-13"></path>
+                    </svg>
+
+                    Hapus
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
     <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
 
-    const menuButton = document.getElementById("menuButton");
-    const mobileMenu = document.getElementById("mobileMenu");
-    const closeMenu = document.getElementById("closeMenu");
+        const menuButton =
+            document.getElementById("menuButton");
 
-    menuButton.addEventListener("click", function () {
-        mobileMenu.classList.add("active");
+        const mobileMenu =
+            document.getElementById("mobileMenu");
+
+        const closeMenu =
+            document.getElementById("closeMenu");
+
+
+        menuButton.addEventListener("click", function () {
+            mobileMenu.classList.add("active");
+        });
+
+
+        closeMenu.addEventListener("click", function () {
+            mobileMenu.classList.remove("active");
+        });
+
     });
+    </script>
 
-    closeMenu.addEventListener("click", function () {
-        mobileMenu.classList.remove("active");
-    });
 
-});
-</script>
+    <script src="js/script.js"></script>
 
-<script src="js/script.js"></script>
 
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+    <!-- SUPABASE -->
 
-<!-- MEMORY -->
-<script src="js/memori.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+
+
+    <!-- MEMORY -->
+
+    <script src="js/memori.js"></script>
 
 </body>
 

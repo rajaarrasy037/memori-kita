@@ -90,6 +90,15 @@ const modalDate =
 const modalDescription =
     document.getElementById("modalDescription");
 
+const deleteConfirmModal =
+    document.getElementById("deleteConfirmModal");
+
+const deleteCancelBtn =
+    document.getElementById("deleteCancelBtn");
+
+const deleteConfirmBtn =
+    document.getElementById("deleteConfirmBtn");
+
 
 /* =========================================
    STORAGE
@@ -2047,18 +2056,41 @@ function openCustomMemory(memory) {
    HAPUS KENANGAN CUSTOM
 ===================================== */
 
+function openDeleteConfirm() {
+
+    if (!deleteConfirmModal) {
+        return;
+    }
+
+    deleteConfirmModal.classList.add("open");
+
+    deleteConfirmModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+
+function closeDeleteConfirm() {
+
+    if (!deleteConfirmModal) {
+        return;
+    }
+
+    deleteConfirmModal.classList.remove("open");
+
+    deleteConfirmModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
 async function deleteCustomMemory() {
 
     if (!currentCustomMemory || !currentCustomMemory.id) {
         alert("Kenangan ini tidak bisa dihapus.");
-        return;
-    }
-
-    const confirmed = confirm(
-        "Hapus kenangan ini?\n\nFoto dan data kenangan akan dihapus permanen."
-    );
-
-    if (!confirmed) {
         return;
     }
 
@@ -2197,20 +2229,81 @@ async function deleteCustomMemory() {
    DELETE MEMORY BUTTON
 ===================================== */
 
-document.addEventListener("click", function (event) {
+const deleteMemoryBtn =
+    document.getElementById("deleteMemoryBtn");
 
-    const deleteButton =
-        event.target.closest("#deleteMemoryBtn");
+if (deleteMemoryBtn) {
 
-    if (!deleteButton) {
-        return;
-    }
+    deleteMemoryBtn.addEventListener(
+        "click",
+        function () {
 
-    console.log("TOMBOL HAPUS DIKLIK");
+            console.log(
+                "TOMBOL HAPUS DIKLIK"
+            );
 
-    deleteCustomMemory();
+            openDeleteConfirm();
 
-});
+        }
+    );
+
+}
+
+/* =====================================
+   DELETE CONFIRMATION EVENTS
+===================================== */
+
+if (deleteCancelBtn) {
+
+    deleteCancelBtn.addEventListener(
+        "click",
+        function () {
+
+            closeDeleteConfirm();
+
+        }
+    );
+
+}
+
+
+if (deleteConfirmBtn) {
+
+    deleteConfirmBtn.addEventListener(
+        "click",
+        async function () {
+
+            closeDeleteConfirm();
+
+            await deleteCustomMemory();
+
+        }
+    );
+
+}
+
+
+/* klik area gelap untuk batal */
+
+if (deleteConfirmModal) {
+
+    deleteConfirmModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target ===
+                deleteConfirmModal
+            ) {
+
+                closeDeleteConfirm();
+
+            }
+
+        }
+    );
+
+}
 
         /* =====================================
            NOTIFIKASI
