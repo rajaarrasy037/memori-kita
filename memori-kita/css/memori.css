@@ -1643,30 +1643,26 @@
         transform 0.3s ease;
 }
 
-#deleteMemoryBtn::before {
-    content: "";
-    width: 7px;
-    height: 9px;
+.delete-icon {
+    width: 13px;
+    height: 13px;
 
-    border: 1px solid currentColor;
-    border-top: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 
-    opacity: 0.7;
+    opacity: .65;
 
-    transform: translateY(1px);
+    transition:
+        opacity .3s ease,
+        transform .3s ease;
 }
 
-#deleteMemoryBtn::after {
-    content: "";
-    position: absolute;
-
-    width: 5px;
-    height: 1px;
-
-    background: currentColor;
-
-    transform: translateY(-6px);
-    opacity: 0.7;
+#deleteMemoryBtn:hover .delete-icon {
+    opacity: 1;
+    transform: translateY(-1px);
 }
 
 #deleteMemoryBtn:hover {
