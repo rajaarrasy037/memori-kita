@@ -466,7 +466,6 @@
     font-size: 30px;
 }
 
-
 /* =========================================
    INFO
 ========================================= */
@@ -1601,3 +1600,86 @@
         height: 220px;
     }
 }
+
+/* =====================================
+   DELETE MEMORY BUTTON
+===================================== */
+
+#deleteMemoryBtn {
+    appearance: none;
+    -webkit-appearance: none;
+
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    width: fit-content;
+    margin-top: 35px;
+    padding: 9px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+
+    background: transparent !important;
+
+    color: rgba(255, 255, 255, 0.35);
+
+    font-family: "Inter", sans-serif;
+    font-size: 8px;
+    font-weight: 400;
+
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    box-shadow: none !important;
+
+    transition:
+        color 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+#deleteMemoryBtn::before {
+    content: "";
+    width: 7px;
+    height: 9px;
+
+    border: 1px solid currentColor;
+    border-top: none;
+
+    opacity: 0.7;
+
+    transform: translateY(1px);
+}
+
+#deleteMemoryBtn::after {
+    content: "";
+    position: absolute;
+
+    width: 5px;
+    height: 1px;
+
+    background: currentColor;
+
+    transform: translateY(-6px);
+    opacity: 0.7;
+}
+
+#deleteMemoryBtn:hover {
+    color: rgba(255, 150, 150, 0.8);
+
+    border-color: rgba(255, 150, 150, 0.25);
+
+    background: rgba(255, 150, 150, 0.035) !important;
+
+    transform: translateY(-2px);
+}
+
+#deleteMemoryBtn:active {
+    transform: translateY(0);
+}
+

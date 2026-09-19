@@ -1602,68 +1602,84 @@
 }
 
 /* =====================================
-   TOMBOL HAPUS KENANGAN
+   DELETE MEMORY BUTTON
 ===================================== */
 
 #deleteMemoryBtn {
-    display: flex !important;
+    appearance: none;
+    -webkit-appearance: none;
+
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    gap: 9px;
+    gap: 8px;
 
     width: fit-content;
+    margin-top: 35px;
+    padding: 9px 14px;
 
-    margin-top: 32px;
-    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
 
-    border: 1px solid rgba(255, 255, 255, .08);
-    border-radius: 999px;
+    background: transparent !important;
 
-    background: rgba(255, 255, 255, .025);
-
-    color: #73798b;
+    color: rgba(255, 255, 255, 0.35);
 
     font-family: "Inter", sans-serif;
     font-size: 8px;
     font-weight: 400;
 
-    letter-spacing: .14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
 
     cursor: pointer;
 
-    opacity: 1 !important;
-    visibility: visible !important;
-
-    position: relative;
-    z-index: 20;
+    box-shadow: none !important;
 
     transition:
-        color .3s ease,
-        background .3s ease,
-        border-color .3s ease,
-        transform .3s ease;
+        color 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease,
+        transform 0.3s ease;
 }
 
+#deleteMemoryBtn::before {
+    content: "";
+    width: 7px;
+    height: 9px;
 
-/* ICON */
+    border: 1px solid currentColor;
+    border-top: none;
 
-#deleteMemoryBtn::first-letter {
-    font-size: 11px;
+    opacity: 0.7;
+
+    transform: translateY(1px);
 }
 
+#deleteMemoryBtn::after {
+    content: "";
+    position: absolute;
 
-/* HOVER */
+    width: 5px;
+    height: 1px;
+
+    background: currentColor;
+
+    transform: translateY(-6px);
+    opacity: 0.7;
+}
 
 #deleteMemoryBtn:hover {
+    color: rgba(255, 150, 150, 0.8);
 
-    color: #c98f8f;
+    border-color: rgba(255, 150, 150, 0.25);
 
-    background: rgba(201, 143, 143, .06);
+    background: rgba(255, 150, 150, 0.035) !important;
 
-    border-color: rgba(201, 143, 143, .25);
+    transform: translateY(-2px);
+}
 
-    transform: translateY(-1px);
-
+#deleteMemoryBtn:active {
+    transform: translateY(0);
 }
 
