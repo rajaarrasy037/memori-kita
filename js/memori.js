@@ -1527,19 +1527,20 @@ async function loadCloudMemories() {
 
         if (error) {
 
-            console.error(
-                "Gagal mengambil kenangan dari Supabase:",
-                error
-            );
+    console.error(
+        "Gagal mengambil kenangan dari Supabase:",
+        error
+    );
 
-            return;
+    return;
 
-        }
+}
 
+console.log("DATA DARI SUPABASE:", data);
 
-        cloudMemories =
-            (data || []).map(
-                memory => ({
+cloudMemories =
+    (data || []).map(
+        memory => ({
 
                     id:
                         memory.id,
