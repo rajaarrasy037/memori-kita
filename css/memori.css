@@ -1600,3 +1600,48 @@
         height: 220px;
     }
 }
+
+/* =====================================
+   TOMBOL HAPUS KENANGAN
+===================================== */
+
+#deleteMemoryBtn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+
+    margin-top: 28px;
+    padding: 12px 20px;
+
+    border: 1px solid rgba(220, 150, 150, .4);
+    border-radius: 8px;
+
+    background: rgba(180, 80, 80, .12);
+    color: #d99a9a;
+
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+
+    letter-spacing: .1em;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    position: relative;
+    z-index: 100;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    transition: .25s ease;
+}
+
+#deleteMemoryBtn:hover {
+    background: rgba(180, 80, 80, .25);
+    color: #fff;
+    border-color: rgba(220, 150, 150, .7);
+}
+
