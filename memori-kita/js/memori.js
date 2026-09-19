@@ -188,16 +188,11 @@ function updateMemoryCount(number = null) {
 
     }
 
-    const saved =
-        getSavedMemories();
-
-    const total =
-        memories.length +
-        saved.length +
-        cloudMemories.length;
+    const items =
+        document.querySelectorAll(".memory-item");
 
     memoryCount.textContent =
-        String(total).padStart(2, "0");
+        String(items.length).padStart(2, "0");
 
 }
 
@@ -1288,6 +1283,18 @@ document.addEventListener(
                 return;
             }
 
+            if (memory.id) {
+
+    const existing =
+        timeline.querySelector(
+            `[data-cloud-id="${memory.id}"]`
+        );
+
+    if (existing) {
+        return;
+    }
+
+}
 
             const article =
                 document.createElement(
@@ -1297,6 +1304,13 @@ document.addEventListener(
 
             article.className =
                 "memory-item reveal custom-memory-item";
+
+            if (memory.id) {
+
+    article.dataset.cloudId =
+        memory.id;
+
+}
 
 
             article.dataset.category =
@@ -1606,6 +1620,128 @@ cloudMemories =
 
 }
 
+function renderBuiltInMemories() {
+
+    const timeline =
+        document.querySelector(".timeline");
+
+    if (!timeline) {
+        return;
+    }
+
+    const existingBuiltInItems =
+        timeline.querySelectorAll(
+            ".memory-item:not(.custom-memory-item)"
+        );
+
+    /*
+       Kalau 3 kartu bawaan sudah ada di HTML,
+       jangan dibuat ulang.
+    */
+    if (existingBuiltInItems.length >= memories.length) {
+        return;
+    }
+
+    /*
+       Kalau kartu bawaan belum ada,
+       buat dari data memories.
+    */
+
+    memories.forEach((memory, index) => {
+
+        const article =
+            document.createElement("article");
+
+        article.className =
+            "memory-item reveal";
+
+        article.dataset.category =
+            index === 0
+                ? "special"
+                : index === 1
+                    ? "jalan"
+                    : "random";
+
+        article.innerHTML = `
+
+            <div class="timeline-date">
+
+                <span>
+                    ${memory.date.split(" ")[0]}
+                </span>
+
+                <small>
+                    ${memory.date.split(" ")[1] || ""}<br>
+                    ${memory.date.split(" ")[2] || ""}
+                </small>
+
+            </div>
+
+            <div class="timeline-dot">
+                <span></span>
+            </div>
+
+            <div class="memory-card">
+
+                <div class="memory-image">
+
+                    <img
+                        src="${memory.image}"
+                        alt="${escapeHTML(memory.title)}"
+                    >
+
+                    <div class="image-overlay">
+
+                        <span>
+                            ${memory.meta.split("·")[0]}
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="memory-info">
+
+                    <div class="memory-meta">
+
+                        <span>
+                            ${memory.meta.split("📍")[1] || ""}
+                        </span>
+
+                    </div>
+
+                    <h2>
+                        ${escapeHTML(memory.title)}
+                    </h2>
+
+                    <p>
+                        ${escapeHTML(memory.description)}
+                    </p>
+
+                    <button
+                        class="read-memory"
+                        type="button"
+                        data-memory="${index}"
+                    >
+                        baca kenangan
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+        timeline.appendChild(article);
+
+        observer.observe(article);
+
+    });
+
+    setupReadButtons();
+
+}
         /* =====================================
            TAMPILKAN DATA TERSIMPAN
         ===================================== */
@@ -1808,14 +1944,16 @@ cloudMemories =
 
 
         /* =====================================
-           LOAD DATA
-        ===================================== */
+   LOAD DATA
+===================================== */
 
-        renderSavedMemories();
+observeMemoryItems();
 
-        setupReadButtons();
+renderSavedMemories();
 
-        loadCloudMemories();
+setupReadButtons();
+
+loadCloudMemories();
 
     }
 );
