@@ -99,6 +99,7 @@ const STORAGE_KEY =
     "memoriKitaMemories";
 
 let cloudMemories = [];
+let currentCustomMemory = null;
 
 /* =========================================
    AMBIL DATA LOCAL STORAGE
@@ -432,6 +433,13 @@ function openMemory(index) {
             memory.description;
 
     }
+
+    const deleteMemoryBtn =
+    document.getElementById("deleteMemoryBtn");
+
+if (deleteMemoryBtn) {
+    deleteMemoryBtn.style.display = "none";
+}
 
     modal.classList.add("open");
 
@@ -1860,99 +1868,349 @@ function renderBuiltInMemories() {
 
 
         /* =====================================
-           BUKA MODAL CUSTOM
-        ===================================== */
+   BUKA MODAL CUSTOM
+===================================== */
 
-        function openCustomMemory(memory) {
-    const modal = document.getElementById("memoryModal");
+function openCustomMemory(memory) {
 
-    if (!modal) return;
+    const modal =
+        document.getElementById("memoryModal");
 
-    const modalImage = document.getElementById("modalImage");
-    const modalNumber = document.getElementById("modalNumber");
-    const modalMeta = document.getElementById("modalMeta");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalDate = document.getElementById("modalDate");
-    const modalDescription = document.getElementById("modalDescription");
+    if (!modal || !memory) {
+        return;
+    }
 
-    // =========================
-    // DATA KENANGAN
-    // =========================
+    /* simpan memory yang sedang dibuka */
+    currentCustomMemory = memory;
 
-    const categoryName = getCategoryName(
-        memory.category || "random"
-    );
+
+    /* =================================
+       ELEMENT MODAL
+    ================================= */
+
+    const modalImage =
+        document.getElementById("modalImage");
+
+    const modalNumber =
+        document.getElementById("modalNumber");
+
+    const modalMeta =
+        document.getElementById("modalMeta");
+
+    const modalTitle =
+        document.getElementById("modalTitle");
+
+    const modalDate =
+        document.getElementById("modalDate");
+
+    const modalDescription =
+        document.getElementById("modalDescription");
+
+    const deleteMemoryBtn =
+        document.getElementById("deleteMemoryBtn");
+
+
+    /* =================================
+       DATA
+    ================================= */
+
+    const categoryName =
+        getCategoryName(
+            memory.category || "random"
+        );
 
     const location =
-        memory.location?.trim() || "tanpa lokasi";
+        memory.location?.trim() ||
+        "tanpa lokasi";
 
-    // Nomor urutan
-    let number = Number(memory.number);
+
+    let number =
+        Number(memory.number);
 
     if (!Number.isFinite(number)) {
         number = 1;
     }
 
-    number = String(number).padStart(2, "0");
+    number =
+        String(number).padStart(2, "0");
 
 
-    // =========================
-    // FOTO
-    // =========================
+    /* =================================
+       ISI MODAL
+    ================================= */
 
-    modalImage.src = memory.image || "";
-    modalImage.alt = memory.title || "Kenangan";
+    if (modalImage) {
 
+        modalImage.src =
+            memory.image || "";
 
-    // =========================
-    // NOMOR
-    // =========================
+        modalImage.alt =
+            memory.title ||
+            "Kenangan";
 
-    modalNumber.textContent = number;
-
-
-    // =========================
-    // KATEGORI + LOKASI
-    // =========================
-
-    modalMeta.textContent =
-        `✦ ${categoryName} · 📍 ${location}`;
+    }
 
 
-    // =========================
-    // JUDUL
-    // =========================
+    if (modalNumber) {
 
-    modalTitle.textContent =
-        memory.title || "Tanpa judul";
+        modalNumber.textContent =
+            number;
 
-
-    // =========================
-    // TANGGAL
-    // =========================
-
-    modalDate.textContent =
-        formatMemoryDate(memory.date);
+    }
 
 
-    // =========================
-    // CERITA
-    // =========================
+    if (modalMeta) {
 
-    modalDescription.textContent =
-        memory.description ||
-        "Sebuah kenangan yang tersimpan.";
+        modalMeta.textContent =
+            `✦ ${categoryName} · 📍 ${location}`;
+
+    }
 
 
-    // =========================
-    // BUKA MODAL
-    // =========================
+    if (modalTitle) {
+
+        modalTitle.textContent =
+            memory.title ||
+            "Tanpa judul";
+
+    }
+
+
+    if (modalDate) {
+
+        modalDate.textContent =
+            formatMemoryDate(
+                memory.date
+            );
+
+    }
+
+
+    if (modalDescription) {
+
+        modalDescription.textContent =
+            memory.description ||
+            "Sebuah kenangan yang tersimpan.";
+
+    }
+
+
+    /* =================================
+       TOMBOL HAPUS
+    ================================= */
+
+    if (deleteMemoryBtn) {
+
+        console.log(
+            "DELETE BUTTON DITEMUKAN:",
+            deleteMemoryBtn
+        );
+
+        console.log(
+            "MEMORY YANG DIBUKA:",
+            memory
+        );
+
+        deleteMemoryBtn.style.display =
+            "flex";
+
+        deleteMemoryBtn.style.visibility =
+            "visible";
+
+        deleteMemoryBtn.style.opacity =
+            "1";
+
+        deleteMemoryBtn.hidden =
+            false;
+
+    } else {
+
+        console.error(
+            "deleteMemoryBtn TIDAK DITEMUKAN!"
+        );
+
+    }
+
+
+    /* =================================
+       BUKA MODAL
+    ================================= */
 
     modal.classList.add("open");
 
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow =
+        "hidden";
+
 }
 
+/* =====================================
+   HAPUS KENANGAN CUSTOM
+===================================== */
+
+async function deleteCustomMemory() {
+
+    if (!currentCustomMemory || !currentCustomMemory.id) {
+        alert("Kenangan ini tidak bisa dihapus.");
+        return;
+    }
+
+    const confirmed = confirm(
+        "Hapus kenangan ini?\n\nFoto dan data kenangan akan dihapus permanen."
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const memoryId = currentCustomMemory.id;
+        const imagePath = currentCustomMemory.imagePath;
+
+        /* ==============================
+           HAPUS DATA DARI SUPABASE
+        ============================== */
+
+        const { error: deleteError } =
+            await supabaseClient
+                .from("memories")
+                .delete()
+                .eq("id", memoryId);
+
+        if (deleteError) {
+            throw deleteError;
+        }
+
+
+        /* ==============================
+           HAPUS FOTO DARI STORAGE
+        ============================== */
+
+        if (imagePath) {
+
+            const { error: storageError } =
+                await supabaseClient
+                    .storage
+                    .from("memory-images")
+                    .remove([imagePath]);
+
+            if (storageError) {
+
+                console.warn(
+                    "Data terhapus, tetapi foto gagal dihapus dari Storage:",
+                    storageError
+                );
+
+            }
+
+        }
+
+
+        /* ==============================
+           HAPUS DARI ARRAY CLOUD
+        ============================== */
+
+        cloudMemories =
+            cloudMemories.filter(
+                memory =>
+                    String(memory.id) !==
+                    String(memoryId)
+            );
+
+
+        /* ==============================
+           HAPUS DARI LOCAL STORAGE
+        ============================== */
+
+        const saved =
+            getSavedMemories();
+
+        const filteredSaved =
+            saved.filter(
+                memory =>
+                    String(memory.id) !==
+                    String(memoryId)
+            );
+
+        saveMemories(
+            filteredSaved
+        );
+
+
+        /* ==============================
+           HAPUS CARD DARI TIMELINE
+        ============================== */
+
+        const card =
+            document.querySelector(
+                `[data-cloud-id="${memoryId}"]`
+            );
+
+        if (card) {
+            card.remove();
+        }
+
+
+        /* ==============================
+           UPDATE JUMLAH
+        ============================== */
+
+        updateMemoryCount();
+
+
+        /* ==============================
+           TUTUP MODAL
+        ============================== */
+
+        closeMemory();
+
+        currentCustomMemory = null;
+
+
+        /* ==============================
+           NOTIFIKASI
+        ============================== */
+
+        showMemoryNotification(
+            "kenangan berhasil dihapus ✦"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Gagal menghapus kenangan:",
+            error
+        );
+
+        alert(
+            "kenangan gagal dihapus:\n\n" +
+            (error.message ||
+                "terjadi kesalahan")
+        );
+
+    }
+
+}
+
+/* =====================================
+   DELETE MEMORY BUTTON
+===================================== */
+
+document.addEventListener("click", function (event) {
+
+    const deleteButton =
+        event.target.closest("#deleteMemoryBtn");
+
+    if (!deleteButton) {
+        return;
+    }
+
+    console.log("TOMBOL HAPUS DIKLIK");
+
+    deleteCustomMemory();
+
+});
 
         /* =====================================
            NOTIFIKASI

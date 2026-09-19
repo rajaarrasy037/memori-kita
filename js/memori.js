@@ -2194,29 +2194,23 @@ async function deleteCustomMemory() {
 }
 
 /* =====================================
-   TOMBOL HAPUS
+   DELETE MEMORY BUTTON
 ===================================== */
 
-const deleteMemoryBtn =
-    document.getElementById("deleteMemoryBtn");
+document.addEventListener("click", function (event) {
 
-console.log(
-    "TOMBOL HAPUS:",
-    deleteMemoryBtn
-);
+    const deleteButton =
+        event.target.closest("#deleteMemoryBtn");
 
-if (deleteMemoryBtn) {
+    if (!deleteButton) {
+        return;
+    }
 
-    deleteMemoryBtn.style.display = "flex";
-    deleteMemoryBtn.style.visibility = "visible";
-    deleteMemoryBtn.style.opacity = "1";
+    console.log("TOMBOL HAPUS DIKLIK");
 
-    deleteMemoryBtn.addEventListener(
-        "click",
-        deleteCustomMemory
-    );
+    deleteCustomMemory();
 
-}
+});
 
         /* =====================================
            NOTIFIKASI
