@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Memori | Memori Raja & Nay</title>
+
+    <meta
+        name="description"
+        content="Perjalanan kenangan yang tersimpan di antara bintang"
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="css/memori.css">
+
+</head>
+
+
+<body>
+
+    <!-- BACKGROUND -->
+
+    <div class="space-background">
+
+        <div class="stars stars-small"></div>
+
+        <div class="stars stars-medium"></div>
+
+        <div class="stars stars-large"></div>
+
+        <div class="nebula nebula-one"></div>
+
+        <div class="nebula nebula-two"></div>
+
+        <div class="memory-glow"></div>
+
+    </div>
+
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+
+            <span>MEMORI KITA</span>
+
+        </a>
+
+
+        <nav class="nav-menu">
+
+            <a
+                href="index.html"
+                class="nav-link"
+            >
+                home
+            </a>
+
+            <a
+                href="memori.html"
+                class="nav-link active"
+            >
+                memori
+            </a>
+
+            <a href="galeri.html" class="nav-link">
+    galeri
+</a>
+
+            <a href="pesan.html" class="nav-link">
+    pesan
+</a>
+
+            <a href="tentang.html" class="nav-link">
+    tentang kita
+</a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <button
+                class="icon-button"
+                id="searchButton"
+                aria-label="Cari"
+            >
+                <span>⌕</span>
+            </button>
+
+
+            <button
+                class="icon-button"
+                id="settingsButton"
+                aria-label="Pengaturan"
+            >
+                <span>⚙</span>
+            </button>
+
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                aria-label="Menu"
+            >
+
+                <span></span>
+
+                <span></span>
+
+                <span></span>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- MOBILE MENU -->
+
+    <div class="mobile-menu" id="mobileMenu">
+
+    <button class="mobile-menu-close" id="closeMenu">
+        ×
+    </button>
+
+    <a href="index.html">home</a>
+
+    <a href="memori.html">memori</a>
+
+    <a href="galeri.html">galeri</a>
+
+    <a href="pesan.html">pesan</a>
+
+    <a href="tentang.html">tentang kita</a>
+
+</div>
+
+<!-- SEARCH PANEL -->
+
+<div
+    class="overlay-panel"
+    id="searchPanel"
+>
+
+    <div class="panel-content">
+
+        <button
+            class="panel-close"
+            data-close="searchPanel"
+            type="button"
+        >
+            ×
+        </button>
+
+        <p class="panel-label">
+            cari kenangan
+        </p>
+
+        <h2>
+            sesuatu yang ingin<br>
+            kamu temukan?
+        </h2>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                name="search"
+                placeholder="cari kenangan..."
+                autocomplete="off"
+                aria-label="Cari kenangan"
+            >
+
+            <span>
+                ⌕
+            </span>
+
+        </div>
+
+        <p class="search-info">
+            gunakan kata seperti judul, lokasi,
+            atau kategori kenangan
+        </p>
+
+    </div>
+
+</div>
+
+    <!-- SETTINGS PANEL -->
+<div class="overlay-panel" id="settingsPanel">
+
+    <div class="panel-content settings-content">
+
+        <button
+            class="panel-close"
+            data-close="settingsPanel"
+            type="button"
+        >
+            ×
+        </button>
+
+        <p class="panel-label">
+            pengaturan
+        </p>
+
+        <h2>
+            atur pengalamanmu
+        </h2>
+
+
+        <div class="setting-item">
+
+            <div>
+
+                <strong>
+                    animasi bintang
+                </strong>
+
+                <small>
+                    mengaktifkan gerakan bintang
+                </small>
+
+            </div>
+
+            <label
+                class="switch"
+                for="starToggle"
+                aria-label="Aktifkan atau nonaktifkan animasi bintang"
+            >
+
+                <input
+                    type="checkbox"
+                    id="starToggle"
+                    name="starToggle"
+                    checked
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <div class="setting-item">
+
+            <div>
+
+                <strong>
+                    efek suara
+                </strong>
+
+                <small>
+                    efek suara interaksi
+                </small>
+
+            </div>
+
+            <label
+                class="switch"
+                for="soundToggle"
+                aria-label="Aktifkan atau nonaktifkan efek suara"
+            >
+
+                <input
+                    type="checkbox"
+                    id="soundToggle"
+                    name="soundToggle"
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+    <!-- HEADER MEMORI -->
+
+    <main class="memory-page">
+
+        <section class="memory-intro">
+
+            <div class="memory-eyebrow">
+
+                <span></span>
+
+                perjalanan yang tersimpan
+
+                <span></span>
+
+            </div>
+
+
+            <h1>
+                Setiap Titik
+                <em>Punya Cerita</em>
+            </h1>
+
+
+            <p>
+                beberapa momen mungkin sudah berlalu,
+                tapi cerita di baliknya akan selalu
+                punya tempat di sini
+            </p>
+
+
+            <div class="memory-count">
+
+    <span id="memoryCount">
+        03
+    </span>
+
+    <small>
+        kenangan tersimpan
+    </small>
+
+</div>
+
+<button
+    class="add-memory-button"
+    id="addMemoryButton"
+    type="button"
+>
+    <span>＋</span>
+    Tambah Kenangan
+</button>
+
+        </section>
+
+
+        <!-- FILTER -->
+
+        <section class="memory-filter">
+
+            <button
+                class="filter-button active"
+                data-filter="all"
+            >
+                semua
+            </button>
+
+            <button
+                class="filter-button"
+                data-filter="special"
+            >
+                special
+            </button>
+
+            <button
+                class="filter-button"
+                data-filter="jalan"
+            >
+                jalan-jalan
+            </button>
+
+            <button
+                class="filter-button"
+                data-filter="random"
+            >
+                random
+            </button>
+
+        </section>
+
+
+        <!-- TIMELINE -->
+
+        <section class="timeline">
+
+            <div class="timeline-line"></div>
+
+
+            <!-- MEMORY 1 -->
+
+            <article
+                class="memory-item"
+                data-category="special"
+                data-title="hari pertama cerita dimulai"
+                data-location="sukabumi"
+            >
+
+                <div class="timeline-date">
+                    <span>12</span>
+
+                    <small>
+                        JAN
+                        <br>
+                        2025
+                    </small>
+                </div>
+
+
+                <div class="timeline-dot">
+                    <span></span>
+                </div>
+
+
+                <div class="memory-card">
+
+                    <div class="memory-image">
+
+                        <img
+                            src="images/memory-1.jpg"
+                            alt="Kenangan pertama"
+                            onerror="this.parentElement.classList.add('image-empty')"
+                        >
+
+                        <div class="image-overlay">
+                            <span>01</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="memory-info">
+
+                        <div class="memory-meta">
+
+                            <span>
+                                ✦ special
+                            </span>
+
+                            <span>
+                                📍 sukabumi
+                            </span>
+
+                        </div>
+
+
+                        <h2>
+                            hari pertama
+                            cerita dimulai
+                        </h2>
+
+
+                        <p>
+                            setiap perjalanan selalu
+                            punya satu titik awal,
+                            dan mungkin inilah salah
+                            satu titik yang paling
+                            berarti.
+                        </p>
+
+
+                        <button
+                            class="read-memory"
+                            data-memory="0"
+                        >
+                            baca kenangan
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- MEMORY 2 -->
+
+            <article
+                class="memory-item"
+                data-category="jalan"
+                data-title="hari yang tidak direncanakan"
+                data-location="bogor"
+            >
+
+                <div class="timeline-date">
+                    <span>28</span>
+
+                    <small>
+                        FEB
+                        <br>
+                        2025
+                    </small>
+                </div>
+
+
+                <div class="timeline-dot">
+                    <span></span>
+                </div>
+
+
+                <div class="memory-card reverse">
+
+                    <div class="memory-image">
+
+                        <img
+                            src="images/memory-2.jpg"
+                            alt="Kenangan perjalanan"
+                            onerror="this.parentElement.classList.add('image-empty')"
+                        >
+
+                        <div class="image-overlay">
+                            <span>02</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="memory-info">
+
+                        <div class="memory-meta">
+
+                            <span>
+                                ✦ jalan-jalan
+                            </span>
+
+                            <span>
+                                📍 bogor
+                            </span>
+
+                        </div>
+
+
+                        <h2>
+                            hari yang
+                            tidak direncanakan
+                        </h2>
+
+
+                        <p>
+                            terkadang momen terbaik
+                            justru datang tanpa
+                            direncanakan dan berubah
+                            menjadi cerita yang selalu
+                            ingin diingat.
+                        </p>
+
+
+                        <button
+                            class="read-memory"
+                            data-memory="1"
+                        >
+                            baca kenangan
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- MEMORY 3 -->
+
+            <article
+                class="memory-item"
+                data-category="random"
+                data-title="sebuah hari sederhana"
+                data-location="rumah"
+            >
+
+                <div class="timeline-date">
+                    <span>15</span>
+
+                    <small>
+                        APR
+                        <br>
+                        2025
+                    </small>
+                </div>
+
+
+                <div class="timeline-dot">
+                    <span></span>
+                </div>
+
+
+                <div class="memory-card">
+
+                    <div class="memory-image">
+
+                        <img
+                            src="images/memory-3.jpg"
+                            alt="Kenangan sederhana"
+                            onerror="this.parentElement.classList.add('image-empty')"
+                        >
+
+                        <div class="image-overlay">
+                            <span>03</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="memory-info">
+
+                        <div class="memory-meta">
+
+                            <span>
+                                ✦ random
+                            </span>
+
+                            <span>
+                                📍 rumah
+                            </span>
+
+                        </div>
+
+
+                        <h2>
+                            sebuah hari
+                            sederhana
+                        </h2>
+
+
+                        <p>
+                            bukan tentang seberapa
+                            besar sebuah kejadian,
+                            tapi tentang bagaimana
+                            sebuah hari biasa bisa
+                            terasa begitu berarti.
+                        </p>
+
+
+                        <button
+                            class="read-memory"
+                            data-memory="2"
+                        >
+                            baca kenangan
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- RANDOM MEMORY -->
+
+        <section class="random-memory">
+
+            <div class="random-inner">
+
+                <span class="random-icon">
+                    ♡
+                </span>
+
+                <div>
+
+                    <small>
+                        nggak tahu mau melihat apa?
+                    </small>
+
+                    <h2>
+                        temukan kenangan secara acak
+                    </h2>
+
+                </div>
+
+
+                <button id="randomButton">
+
+                    random memory
+
+                    <span>↗</span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- END -->
+
+        <section class="memory-end">
+
+            <span class="end-star">
+                ♡
+            </span>
+
+            <p>
+                masih banyak cerita
+                yang belum kita tulis
+            </p>
+
+            <span class="end-line"></span>
+
+        </section>
+
+    </main>
+
+    <!-- ADD MEMORY MODAL -->
+
+<div
+    class="add-memory-modal"
+    id="addMemoryModal"
+>
+
+    <div class="add-memory-content">
+
+        <button
+            class="add-memory-close"
+            id="addMemoryClose"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <div class="add-memory-header">
+
+            <span>
+                ✦ tambah kenangan
+            </span>
+
+            <h2>
+                simpan satu cerita baru
+            </h2>
+
+            <p>
+                tambahkan foto dan sedikit cerita
+                untuk disimpan di antara kenangan kita
+            </p>
+
+        </div>
+
+
+        <form id="addMemoryForm">
+
+
+            <!-- FOTO -->
+
+            <div class="memory-form-group">
+
+                <label>
+                    foto kenangan
+                </label>
+
+                <label
+                    class="memory-upload"
+                    for="memoryPhoto"
+                >
+
+                    <input
+                        type="file"
+                        id="memoryPhoto"
+                        accept="image/*"
+                        hidden
+                    >
+
+                    <div
+                        class="memory-upload-preview"
+                        id="memoryUploadPreview"
+                    >
+
+                        <span>
+                            ＋
+                        </span>
+
+                        <strong>
+                            pilih foto
+                        </strong>
+
+                        <small>
+                            JPG, PNG, WEBP
+                        </small>
+
+                    </div>
+
+                </label>
+
+            </div>
+
+
+            <!-- JUDUL -->
+
+            <div class="memory-form-group">
+
+                <label for="memoryTitle">
+                    judul kenangan
+                </label>
+
+                <input
+                    type="text"
+                    id="memoryTitle"
+                    placeholder="contoh: hari yang paling berkesan"
+                    maxlength="80"
+                    required
+                >
+
+            </div>
+
+
+            <!-- TANGGAL + LOKASI -->
+
+            <div class="memory-form-row">
+
+                <div class="memory-form-group">
+
+                    <label for="memoryDate">
+                        tanggal
+                    </label>
+
+                    <input
+                        type="date"
+                        id="memoryDate"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="memory-form-group">
+
+                    <label for="memoryLocation">
+                        lokasi
+                    </label>
+
+                    <input
+                        type="text"
+                        id="memoryLocation"
+                        placeholder="contoh: bogor"
+                        maxlength="40"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- KATEGORI -->
+
+            <div class="memory-form-group">
+
+                <label for="memoryCategory">
+                    kategori
+                </label>
+
+                <select id="memoryCategory">
+
+                    <option value="special">
+                        special
+                    </option>
+
+                    <option value="jalan">
+                        jalan-jalan
+                    </option>
+
+                    <option value="random">
+                        random
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- CERITA -->
+
+            <div class="memory-form-group">
+
+                <label for="memoryDescription">
+                    cerita
+                </label>
+
+                <textarea
+                    id="memoryDescription"
+                    rows="5"
+                    maxlength="500"
+                    placeholder="ceritakan sedikit tentang kenangan ini..."
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="save-memory-button"
+                type="submit"
+            >
+                <span>✦</span>
+                simpan kenangan
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+    <!-- MEMORY MODAL -->
+
+    <div
+        class="memory-modal"
+        id="memoryModal"
+    >
+
+        <div class="memory-modal-content">
+
+            <button
+                class="modal-close"
+                id="modalClose"
+            >
+                ×
+            </button>
+
+
+            <div class="modal-image">
+
+                <img
+                    id="modalImage"
+                    src=""
+                    alt=""
+                >
+
+            </div>
+
+
+            <div class="modal-details">
+
+                <div class="modal-number" id="modalNumber">
+                    01
+                </div>
+
+
+                <div class="modal-meta" id="modalMeta">
+                    ✦ special · 📍 sukabumi
+                </div>
+
+
+                <h2 id="modalTitle">
+                    hari pertama
+                </h2>
+
+
+                <div
+                    class="modal-date"
+                    id="modalDate"
+                >
+                    12 Januari 2025
+                </div>
+
+
+                <p id="modalDescription">
+                    cerita kenangan.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- NOTIFICATION -->
+
+    <div
+        class="notification"
+        id="notification"
+    >
+
+        <span class="notification-icon">
+            ✦
+        </span>
+
+        <span id="notificationText">
+            segera hadir
+        </span>
+
+    </div>
+
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const closeMenu = document.getElementById("closeMenu");
+
+    menuButton.addEventListener("click", function () {
+        mobileMenu.classList.add("active");
+    });
+
+    closeMenu.addEventListener("click", function () {
+        mobileMenu.classList.remove("active");
+    });
+
+});
+</script>
+
+<script src="js/script.js"></script>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- MEMORY -->
+<script src="js/memori.js"></script>
+
+</body>
+
+</html>

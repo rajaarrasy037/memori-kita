@@ -1,0 +1,534 @@
+/* =========================================
+   HASIL PENCARIAN
+========================================= */
+
+.search-page {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    min-height: 100vh;
+
+    margin: 0 auto;
+
+    padding:
+        150px 35px 100px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.search-page-header {
+
+    text-align: center;
+
+    margin-bottom: 55px;
+
+}
+
+
+.search-label {
+
+    margin: 0 0 15px;
+
+    color:
+        rgba(190, 180, 255, .85);
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+}
+
+
+.search-page-header h1 {
+
+    margin: 0;
+
+    color: white;
+
+    font-family:
+        "Playfair Display",
+        serif;
+
+    font-size:
+        clamp(34px, 5vw, 58px);
+
+    font-weight: 400;
+
+    line-height: 1.2;
+
+    word-break: break-word;
+
+}
+
+
+.search-page-header p:last-child {
+
+    margin:
+        18px auto 0;
+
+    max-width: 600px;
+
+    color:
+        rgba(255, 255, 255, .5);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================================
+   HASIL GRID
+========================================= */
+
+.search-results {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 22px;
+
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.search-result-item {
+
+    position: relative;
+
+    display: block;
+
+    min-height: 210px;
+
+    padding: 28px 30px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+
+    text-decoration: none;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, .08);
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.055),
+            rgba(255,255,255,.015)
+        );
+
+    backdrop-filter:
+        blur(15px);
+
+    -webkit-backdrop-filter:
+        blur(15px);
+
+    transition:
+        transform .35s ease,
+        border-color .35s ease,
+        background .35s ease,
+        box-shadow .35s ease;
+
+}
+
+
+.search-result-item::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    top: -90px;
+
+    right: -90px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(120, 100, 255, .08);
+
+    filter:
+        blur(35px);
+
+    pointer-events: none;
+
+}
+
+
+.search-result-item:hover {
+
+    transform:
+        translateY(-6px);
+
+    border-color:
+        rgba(180, 165, 255, .28);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.025)
+        );
+
+    box-shadow:
+        0 20px 60px
+        rgba(0, 0, 0, .25);
+
+}
+
+
+/* =========================================
+   TYPE
+========================================= */
+
+.search-result-type {
+
+    display: inline-flex;
+
+    padding:
+        6px 11px;
+
+    margin-bottom:
+        17px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius: 50px;
+
+    color:
+        rgba(195,185,255,.9);
+
+    background:
+        rgba(255,255,255,.035);
+
+    font-size: 9px;
+
+    letter-spacing:
+        1.5px;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+/* =========================================
+   JUDUL
+========================================= */
+
+.search-result-item h3 {
+
+    margin:
+        0 0 10px;
+
+    color: white;
+
+    font-family:
+        "Playfair Display",
+        serif;
+
+    font-size: 25px;
+
+    font-weight: 400;
+
+    line-height: 1.35;
+
+}
+
+
+/* =========================================
+   META
+========================================= */
+
+.search-result-meta {
+
+    margin-bottom:
+        15px;
+
+    color:
+        rgba(255,255,255,.4);
+
+    font-size: 11px;
+
+    letter-spacing: .4px;
+
+}
+
+
+/* =========================================
+   DESKRIPSI
+========================================= */
+
+.search-result-description {
+
+    margin: 0;
+
+    color:
+        rgba(255,255,255,.55);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================================
+   ARROW
+========================================= */
+
+.search-result-arrow {
+
+    display: inline-block;
+
+    margin-top:
+        20px;
+
+    color:
+        rgba(255,255,255,.6);
+
+    font-size: 11px;
+
+    letter-spacing: .8px;
+
+    transition:
+        transform .3s ease,
+        color .3s ease;
+
+}
+
+
+.search-result-item:hover
+.search-result-arrow {
+
+    color: white;
+
+    transform:
+        translateX(5px);
+
+}
+
+
+/* =========================================
+   TIDAK ADA HASIL
+========================================= */
+
+.search-no-result {
+
+    width: 100%;
+
+    padding:
+        70px 30px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    backdrop-filter:
+        blur(12px);
+
+    -webkit-backdrop-filter:
+        blur(12px);
+
+}
+
+
+.search-no-icon {
+
+    width: 60px;
+
+    height: 60px;
+
+    margin:
+        0 auto 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius: 50%;
+
+    color:
+        rgba(195,185,255,.8);
+
+    background:
+        rgba(255,255,255,.035);
+
+    font-size: 20px;
+
+}
+
+
+.search-no-result h2 {
+
+    margin:
+        0 0 10px;
+
+    color: white;
+
+    font-family:
+        "Playfair Display",
+        serif;
+
+    font-size: 28px;
+
+    font-weight: 400;
+
+}
+
+
+.search-no-result p {
+
+    margin: 0;
+
+    color:
+        rgba(255,255,255,.5);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 800px) {
+
+    .search-page {
+
+        padding:
+            125px 22px 80px;
+
+    }
+
+
+    .search-results {
+
+        grid-template-columns:
+            1fr;
+
+        gap: 16px;
+
+    }
+
+
+    .search-result-item {
+
+        min-height: auto;
+
+        padding: 24px;
+
+    }
+
+
+    .search-result-item h3 {
+
+        font-size: 22px;
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .search-page {
+
+        padding:
+            115px 16px 70px;
+
+    }
+
+
+    .search-page-header {
+
+        margin-bottom: 35px;
+
+    }
+
+
+    .search-page-header h1 {
+
+        font-size: 32px;
+
+    }
+
+
+    .search-page-header p:last-child {
+
+        font-size: 12px;
+
+    }
+
+
+    .search-result-item {
+
+        padding: 21px;
+
+        border-radius: 15px;
+
+    }
+
+
+    .search-result-item h3 {
+
+        font-size: 21px;
+
+    }
+
+
+    .search-result-description {
+
+        font-size: 12px;
+
+    }
+
+}

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Memori Raja & Nay</title>
+
+    <meta name="description" content="Sebuah ruang kecil untuk menyimpan cerita dan kenangan">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <div class="space-background">
+
+        <div class="stars stars-small"></div>
+        <div class="stars stars-medium"></div>
+        <div class="stars stars-large"></div>
+
+        <div class="nebula nebula-one"></div>
+        <div class="nebula nebula-two"></div>
+
+        <div class="moon"></div>
+
+        <div class="planet planet-one"></div>
+        <div class="planet planet-two"></div>
+
+    </div>
+
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <a href="index.html" class="logo">
+            <span>MEMORI KITA</span>
+        </a>
+
+
+        <nav class="nav-menu">
+
+            <a href="index.html" class="nav-link active">
+                home
+            </a>
+
+            <a href="memori.html" class="nav-link">
+    memori
+</a>
+
+            <a href="galeri.html" class="nav-link">
+    galeri
+</a>
+
+            <a href="pesan.html" class="nav-link">
+    pesan
+</a>
+
+            <a href="tentang.html" class="nav-link">
+    tentang kita
+</a>
+
+        </nav>
+
+
+        <div class="nav-actions">
+
+            <button class="icon-button" id="searchButton" aria-label="Cari">
+                <span>⌕</span>
+            </button>
+
+            <button class="icon-button" id="settingsButton" aria-label="Pengaturan">
+                <span>⚙</span>
+            </button>
+
+            <button class="menu-button" id="menuButton" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+        </div>
+
+    </header>
+
+
+<!-- SEARCH PANEL -->
+<div class="overlay-panel" id="searchPanel">
+
+    <div class="panel-content">
+
+        <button
+            class="panel-close"
+            data-close="searchPanel"
+            type="button"
+        >
+            ×
+        </button>
+
+        <p class="panel-label">
+            cari kenangan
+        </p>
+
+        <h2>
+            sesuatu yang ingin<br>
+            kamu temukan?
+        </h2>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                name="search"
+                placeholder="cari kenangan..."
+                autocomplete="off"
+                aria-label="Cari kenangan"
+            >
+
+            <span>⌕</span>
+
+        </div>
+
+        <p class="search-info">
+            gunakan kata seperti judul, lokasi,
+            atau kategori kenangan
+        </p>
+
+    </div>
+
+</div>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+
+    <button class="mobile-menu-close" id="closeMenu">
+        ×
+    </button>
+
+    <a href="index.html">home</a>
+
+    <a href="memori.html">memori</a>
+
+    <a href="galeri.html">galeri</a>
+
+    <a href="pesan.html">pesan</a>
+
+    <a href="tentang.html">tentang kita</a>
+
+</div>
+
+
+    <!-- SETTINGS PANEL -->
+<div class="overlay-panel" id="settingsPanel">
+
+    <div class="panel-content settings-content">
+
+        <button
+            class="panel-close"
+            data-close="settingsPanel"
+            type="button"
+        >
+            ×
+        </button>
+
+        <p class="panel-label">
+            pengaturan
+        </p>
+
+        <h2>
+            atur pengalamanmu
+        </h2>
+
+
+        <div class="setting-item">
+
+            <div>
+
+                <strong>
+                    animasi bintang
+                </strong>
+
+                <small>
+                    mengaktifkan gerakan bintang
+                </small>
+
+            </div>
+
+            <label
+                class="switch"
+                for="starToggle"
+                aria-label="Aktifkan atau nonaktifkan animasi bintang"
+            >
+
+                <input
+                    type="checkbox"
+                    id="starToggle"
+                    name="starToggle"
+                    checked
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <div class="setting-item">
+
+            <div>
+
+                <strong>
+                    efek suara
+                </strong>
+
+                <small>
+                    efek suara interaksi
+                </small>
+
+            </div>
+
+            <label
+                class="switch"
+                for="soundToggle"
+                aria-label="Aktifkan atau nonaktifkan efek suara"
+            >
+
+                <input
+                    type="checkbox"
+                    id="soundToggle"
+                    name="soundToggle"
+                >
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+    <!-- HERO -->
+    <main class="hero">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+
+                <span class="eyebrow-line"></span>
+
+                <span>sebuah ruang untuk menyimpan cerita</span>
+
+                <span class="eyebrow-line"></span>
+
+            </div>
+
+
+            <h1>
+                Memori
+                <span>Raja & Nay</span>
+            </h1>
+
+
+            <p class="hero-description">
+                setiap kenangan adalah bintang,
+                <br>
+                dan semuanya membentuk cerita kita
+            </p>
+
+
+            <a href="memori.html" class="explore-button">
+
+    <span class="button-icon">✦</span>
+
+    <span>jelajahi kenangan</span>
+
+    <span class="button-arrow">→</span>
+
+</a>
+
+
+            <div class="time-widget">
+
+                <div class="time" id="clock">
+                    00 : 00
+                </div>
+
+                <div class="date" id="date">
+                    memuat tanggal...
+                </div>
+
+                <div class="time-message">
+                    masih banyak cerita yang belum kita tulis
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- CONSTELLATION DECORATION -->
+    <div class="constellation constellation-one">
+
+        <span class="star-point point-one"></span>
+        <span class="star-point point-two"></span>
+        <span class="star-point point-three"></span>
+        <span class="star-point point-four"></span>
+
+        <span class="line line-one"></span>
+        <span class="line line-two"></span>
+        <span class="line line-three"></span>
+
+    </div>
+
+
+    <div class="constellation constellation-two">
+
+        <span class="star-point point-one"></span>
+        <span class="star-point point-two"></span>
+        <span class="star-point point-three"></span>
+
+        <span class="line line-one"></span>
+        <span class="line line-two"></span>
+
+    </div>
+
+
+    <!-- BOTTOM INFO -->
+    <div class="bottom-info">
+
+        <div class="scroll-indicator">
+
+            <span class="scroll-line"></span>
+
+            <span>
+                scroll untuk menjelajah
+            </span>
+
+        </div>
+
+
+        <div class="coordinates">
+
+            <span>RA</span>
+            <span>07h 42m 31s</span>
+
+            <span class="separator">•</span>
+
+            <span>DEC</span>
+            <span>+28° 18' 42"</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- NOTIFICATION -->
+    <div class="notification" id="notification">
+
+        <span class="notification-icon">✦</span>
+
+        <span id="notificationText">
+            segera hadir
+        </span>
+
+    </div>
+
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuButton = document.getElementById("menuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const closeMenu = document.getElementById("closeMenu");
+
+    menuButton.addEventListener("click", function () {
+        mobileMenu.classList.add("active");
+    });
+
+    closeMenu.addEventListener("click", function () {
+        mobileMenu.classList.remove("active");
+    });
+
+});
+</script>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
