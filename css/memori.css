@@ -1609,39 +1609,61 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
+    gap: 9px;
 
     width: fit-content;
 
-    margin-top: 28px;
-    padding: 12px 20px;
+    margin-top: 32px;
+    padding: 10px 15px;
 
-    border: 1px solid rgba(220, 150, 150, .4);
-    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 999px;
 
-    background: rgba(180, 80, 80, .12);
-    color: #d99a9a;
+    background: rgba(255, 255, 255, .025);
+
+    color: #73798b;
 
     font-family: "Inter", sans-serif;
-    font-size: 10px;
-    font-weight: 500;
+    font-size: 8px;
+    font-weight: 400;
 
-    letter-spacing: .1em;
+    letter-spacing: .14em;
     text-transform: uppercase;
 
     cursor: pointer;
 
-    position: relative;
-    z-index: 100;
-
     opacity: 1 !important;
     visibility: visible !important;
 
-    transition: .25s ease;
+    position: relative;
+    z-index: 20;
+
+    transition:
+        color .3s ease,
+        background .3s ease,
+        border-color .3s ease,
+        transform .3s ease;
 }
 
+
+/* ICON */
+
+#deleteMemoryBtn::first-letter {
+    font-size: 11px;
+}
+
+
+/* HOVER */
+
 #deleteMemoryBtn:hover {
-    background: rgba(180, 80, 80, .25);
-    color: #fff;
-    border-color: rgba(220, 150, 150, .7);
+
+    color: #c98f8f;
+
+    background: rgba(201, 143, 143, .06);
+
+    border-color: rgba(201, 143, 143, .25);
+
+    transform: translateY(-1px);
+
 }
 
