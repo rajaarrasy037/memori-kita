@@ -1,4 +1,20 @@
 /* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://lwjnkiexgvmlrbxgwqbt.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_EGaiZXXKufCq6cs6I1z9Fw_5lQqMrcx";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+/* =========================================
    MEMORY DATA
 ========================================= */
 
@@ -82,6 +98,7 @@ const modalDescription =
 const STORAGE_KEY =
     "memoriKitaMemories";
 
+let cloudMemories = [];
 
 /* =========================================
    AMBIL DATA LOCAL STORAGE
@@ -175,7 +192,9 @@ function updateMemoryCount(number = null) {
         getSavedMemories();
 
     const total =
-        memories.length + saved.length;
+        memories.length +
+        saved.length +
+        cloudMemories.length;
 
     memoryCount.textContent =
         String(total).padStart(2, "0");
@@ -651,6 +670,7 @@ document.addEventListener(
 
 
         let selectedImage = "";
+        let selectedFile = null;
 
 
         /* =====================================
@@ -659,18 +679,33 @@ document.addEventListener(
 
         if (addButton && addModal) {
 
-            addButton.addEventListener(
-                "click",
-                () => {
+    addButton.addEventListener(
+        "click",
+        async () => {
 
-                    addModal.classList.add(
-                        "active"
-                    );
-
+            const {
+                data: {
+                    session
                 }
+            } = await supabaseClient.auth.getSession();
+
+            if (!session) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+            addModal.classList.add(
+                "active"
             );
 
         }
+    );
+
+}
 
 
         /* =====================================
@@ -738,23 +773,25 @@ document.addEventListener(
                         return;
                     }
 
+                    selectedFile = file;
+
                     if (
-                        !file.type.startsWith(
-                            "image/"
-                        )
-                    ) {
+    !file.type.startsWith(
+        "image/"
+    )
+) {
 
-                        alert(
-                            "file yang dipilih harus berupa foto"
-                        );
+    alert(
+        "file yang dipilih harus berupa foto"
+    );
 
-                        photoInput.value = "";
+    photoInput.value = "";
 
-                        selectedImage = "";
+    selectedImage = "";
+    selectedFile = null;
 
-                        return;
-
-                    }
+    return;
+}
 
 
                     const reader =
@@ -799,6 +836,7 @@ document.addEventListener(
                         () => {
 
                             selectedImage = "";
+                            selectedFile = null;
 
                             alert(
                                 "foto gagal dibaca, coba pilih foto lain"
@@ -821,159 +859,418 @@ document.addEventListener(
 
         if (form) {
 
-            form.addEventListener(
-                "submit",
-                event => {
+    form.addEventListener(
+        "submit",
+        async event => {
 
-                    event.preventDefault();
+            event.preventDefault();
 
 
-                    if (!selectedImage) {
+            /* =================================
+               CEK LOGIN
+            ================================= */
 
-                        alert(
-                            "pilih foto terlebih dahulu"
+            const {
+                data: {
+                    session
+                }
+            } = await supabaseClient.auth.getSession();
+
+
+            if (!session) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+
+            /* =================================
+               CEK FOTO
+            ================================= */
+
+            if (!selectedFile) {
+
+                alert(
+                    "pilih foto terlebih dahulu"
+                );
+
+                return;
+
+            }
+
+
+            /* =================================
+               AMBIL FORM
+            ================================= */
+
+            const title =
+                titleInput
+                    ? titleInput.value.trim()
+                    : "";
+
+
+            const date =
+                dateInput
+                    ? dateInput.value
+                    : "";
+
+
+            const location =
+                locationInput
+                    ? locationInput.value.trim()
+                    : "";
+
+
+            const category =
+                categoryInput
+                    ? categoryInput.value
+                    : "random";
+
+
+            const description =
+                descriptionInput
+                    ? descriptionInput.value.trim()
+                    : "";
+
+
+            if (!title || !date) {
+
+                alert(
+                    "judul dan tanggal wajib diisi"
+                );
+
+                return;
+
+            }
+
+
+            /* =================================
+               TOMBOL LOADING
+            ================================= */
+
+            const submitButton =
+                form.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            if (submitButton) {
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "menyimpan...";
+
+            }
+
+
+            try {
+
+                /* =================================
+                   NAMA FILE
+                ================================= */
+
+                const cleanFileName =
+                    selectedFile.name
+                        .replace(
+                            /[^\w.-]/g,
+                            "_"
                         );
 
-                        return;
 
-                    }
-
-
-                    const title =
-                        titleInput
-                            ? titleInput.value.trim()
-                            : "";
+                const filePath =
+                    `${crypto.randomUUID()}-${cleanFileName}`;
 
 
-                    const date =
-                        dateInput
-                            ? dateInput.value
-                            : "";
+                /* =================================
+                   UPLOAD FOTO
+                ================================= */
 
-
-                    const location =
-                        locationInput
-                            ? locationInput.value.trim()
-                            : "";
-
-
-                    const category =
-                        categoryInput
-                            ? categoryInput.value
-                            : "random";
-
-
-                    const description =
-                        descriptionInput
-                            ? descriptionInput.value.trim()
-                            : "";
-
-
-                    if (!title || !date) {
-
-                        alert(
-                            "judul dan tanggal wajib diisi"
-                        );
-
-                        return;
-
-                    }
-
-
-                    const newMemory = {
-
-                        id: Date.now(),
-
-                        image: selectedImage,
-
-                        title: title,
-
-                        date: date,
-
-                        location: location,
-
-                        category: category,
-
-                        description: description
-
-                    };
-
-
-                    const savedMemories =
-                        getSavedMemories();
-
-
-                    savedMemories.push(
-                        newMemory
+                const {
+                    error: uploadError
+                } = await supabaseClient.storage
+                    .from("memory-images")
+                    .upload(
+                        filePath,
+                        selectedFile,
+                        {
+                            upsert: false,
+                            contentType:
+                                selectedFile.type
+                        }
                     );
 
 
-                    const saved =
-                        saveMemories(
-                            savedMemories
-                        );
+                if (uploadError) {
 
-
-                    if (!saved) {
-                        return;
-                    }
-
-
-                    /* tampilkan langsung */
-
-                    addMemoryToTimeline(
-                        newMemory
+                    console.error(
+                        "Upload foto gagal:",
+                        uploadError
                     );
 
-
-                    /* update jumlah */
-
-                    updateMemoryCount();
-
-
-                    /* tutup modal */
-
-                    closeAddModal();
-
-
-                    /* reset form */
-
-                    form.reset();
-
-                    selectedImage = "";
-
-
-                    if (photoPreview) {
-
-                        photoPreview.classList.remove(
-                            "has-image"
-                        );
-
-                        photoPreview.innerHTML = `
-
-                            <span>＋</span>
-
-                            <strong>
-                                pilih foto
-                            </strong>
-
-                            <small>
-                                JPG, PNG, WEBP
-                            </small>
-
-                        `;
-
-                    }
-
-
-                    showMemoryNotification(
-                        "kenangan berhasil ditambahkan ✦"
+                    alert(
+                        "foto gagal diupload: " +
+                        uploadError.message
                     );
+
+                    return;
 
                 }
-            );
+
+
+                /* =================================
+                   PUBLIC URL
+                ================================= */
+
+                const {
+                    data: publicUrlData
+                } =
+                    supabaseClient.storage
+                        .from("memory-images")
+                        .getPublicUrl(
+                            filePath
+                        );
+
+
+                const imageUrl =
+                    publicUrlData.publicUrl;
+
+
+                /* =================================
+                   NOMOR KENANGAN
+                ================================= */
+
+                const allNumbers = [
+                    ...memories.map(
+                        memory =>
+                            Number(memory.number)
+                    ),
+
+                    ...cloudMemories.map(
+                        memory =>
+                            Number(memory.number)
+                    ),
+
+                    ...getSavedMemories().map(
+                        memory =>
+                            Number(memory.number)
+                    )
+                ].filter(
+                    number =>
+                        !Number.isNaN(number)
+                );
+
+
+                const nextNumber =
+                    allNumbers.length
+                        ? Math.max(...allNumbers) + 1
+                        : 1;
+
+
+                /* =================================
+                   SIMPAN KE DATABASE
+                ================================= */
+
+                const {
+                    data,
+                    error: databaseError
+                } = await supabaseClient
+                    .from("memories")
+                    .insert([
+                        {
+                            number: nextNumber,
+
+                            title: title,
+
+                            date: date,
+
+                            location: location,
+
+                            category: category,
+
+                            description:
+                                description,
+
+                            image_url:
+                                imageUrl,
+
+                            image_path:
+                                filePath
+                        }
+                    ])
+                    .select()
+                    .single();
+
+
+                if (databaseError) {
+
+                    console.error(
+                        "Database error:",
+                        databaseError
+                    );
+
+
+                    /* hapus foto jika database gagal */
+
+                    await supabaseClient.storage
+                        .from("memory-images")
+                        .remove([
+                            filePath
+                        ]);
+
+
+                    alert(
+                        "data kenangan gagal disimpan: " +
+                        databaseError.message
+                    );
+
+                    return;
+
+                }
+
+
+                /* =================================
+                   UBAH FORMAT DATA
+                ================================= */
+
+                const newMemory = {
+
+                    id:
+                        data.id,
+
+                    number:
+                        String(
+                            data.number
+                        ).padStart(
+                            2,
+                            "0"
+                        ),
+
+                    image:
+                        data.image_url,
+
+                    imagePath:
+                        data.image_path,
+
+                    title:
+                        data.title,
+
+                    date:
+                        data.date,
+
+                    location:
+                        data.location,
+
+                    category:
+                        data.category,
+
+                    description:
+                        data.description
+
+                };
+
+
+                /* =================================
+                   MASUKKAN KE CLOUD MEMORY
+                ================================= */
+
+                cloudMemories.push(
+                    newMemory
+                );
+
+
+                /* =================================
+                   TAMPILKAN LANGSUNG
+                ================================= */
+
+                addMemoryToTimeline(
+                    newMemory
+                );
+
+
+                updateMemoryCount();
+
+
+                /* =================================
+                   TUTUP MODAL
+                ================================= */
+
+                closeAddModal();
+
+
+                /* =================================
+                   RESET FORM
+                ================================= */
+
+                form.reset();
+
+                selectedImage = "";
+
+                selectedFile = null;
+
+
+                if (photoPreview) {
+
+                    photoPreview.classList.remove(
+                        "has-image"
+                    );
+
+                    photoPreview.innerHTML = `
+
+                        <span>＋</span>
+
+                        <strong>
+                            pilih foto
+                        </strong>
+
+                        <small>
+                            JPG, PNG, WEBP
+                        </small>
+
+                    `;
+
+                }
+
+
+                showMemoryNotification(
+                    "kenangan berhasil disimpan ke cloud ✦"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Gagal menyimpan kenangan:",
+                    error
+                );
+
+
+                alert(
+                    "terjadi kesalahan saat menyimpan kenangan"
+                );
+
+
+            } finally {
+
+                if (submitButton) {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.textContent =
+                        "Simpan Kenangan";
+
+                }
+
+            }
 
         }
+    );
+
+}
 
 
         /* =====================================
@@ -1206,6 +1503,108 @@ document.addEventListener(
 
         }
 
+        /*  =====================================
+            LOAD KENANGAN DARI SUPABASE
+        ===================================== */
+
+async function loadCloudMemories() {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("memories")
+            .select("*")
+            .order(
+                "date",
+                {
+                    ascending: true
+                }
+            );
+
+
+        if (error) {
+
+    console.error(
+        "Gagal mengambil kenangan dari Supabase:",
+        error
+    );
+
+    return;
+
+}
+
+console.log("DATA DARI SUPABASE:", data);
+
+cloudMemories =
+    (data || []).map(
+        memory => ({
+
+                    id:
+                        memory.id,
+
+                    number:
+                        String(
+                            memory.number
+                        ).padStart(
+                            2,
+                            "0"
+                        ),
+
+                    image:
+                        memory.image_url,
+
+                    imagePath:
+                        memory.image_path,
+
+                    title:
+                        memory.title,
+
+                    date:
+                        memory.date,
+
+                    location:
+                        memory.location,
+
+                    category:
+                        memory.category,
+
+                    description:
+                        memory.description
+
+                })
+            );
+
+
+        cloudMemories.forEach(
+            memory => {
+
+                addMemoryToTimeline(
+                    memory
+                );
+
+            }
+        );
+
+
+        updateMemoryCount();
+
+
+        observeMemoryItems();
+
+
+    } catch (error) {
+
+        console.error(
+            "Cloud memory error:",
+            error
+        );
+
+    }
+
+}
 
         /* =====================================
            TAMPILKAN DATA TERSIMPAN
@@ -1415,6 +1814,8 @@ document.addEventListener(
         renderSavedMemories();
 
         setupReadButtons();
+
+        loadCloudMemories();
 
     }
 );
