@@ -43,7 +43,46 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     /* =====================================
-       LIGHTBOX ELEMENT
+       UPLOAD ELEMENT
+    ===================================== */
+
+    const uploadButton =
+        document.getElementById("galleryUploadButton");
+
+    const uploadModal =
+        document.getElementById("galleryUploadModal");
+
+    const uploadClose =
+        document.getElementById("galleryUploadClose");
+
+    const uploadForm =
+        document.getElementById("galleryUploadForm");
+
+    const uploadTypeButtons = [
+        ...document.querySelectorAll(".upload-type-button")
+    ];
+
+    const galleryTitle =
+        document.getElementById("galleryTitle");
+
+    const galleryCategory =
+        document.getElementById("galleryCategory");
+
+    const galleryDescription =
+        document.getElementById("galleryDescription");
+
+    const galleryFile =
+        document.getElementById("galleryFile");
+
+    const galleryFileHint =
+        document.getElementById("galleryFileHint");
+
+    const gallerySubmitButton =
+        document.getElementById("gallerySubmitButton");
+
+
+    /* =====================================
+       LIGHTBOX
     ===================================== */
 
     const lightbox =
@@ -70,6 +109,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const lightboxNext =
         document.getElementById("lightboxNext");
 
+    const deleteGalleryBtn =
+        document.getElementById("deleteGalleryBtn");
+
+    const deleteGalleryConfirmModal =
+        document.getElementById("deleteGalleryConfirmModal");
+
+    const deleteGalleryCancelBtn =
+        document.getElementById("deleteGalleryCancelBtn");
+
+    const deleteGalleryConfirmBtn =
+        document.getElementById("deleteGalleryConfirmBtn");
+
 
     /* =====================================
        DATA
@@ -83,9 +134,191 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let currentSearch = "";
 
+    let selectedType = "image";
+
+    let currentGalleryItem = null;
+
 
     /* =====================================
-       LOAD DATA SUPABASE
+       NOTIFICATION
+    ===================================== */
+
+    function showNotification(message) {
+
+    const notification =
+        document.getElementById("notification");
+
+    const notificationText =
+        document.getElementById("notificationText");
+
+    if (!notification || !notificationText) {
+        return;
+    }
+
+    notificationText.textContent =
+        message;
+
+    notification.classList.add("show");
+
+    setTimeout(() => {
+
+        notification.classList.remove("show");
+
+    }, 3000);
+
+}
+
+
+    /* =====================================
+       MODAL
+    ===================================== */
+
+    function openUploadModal() {
+
+        if (!uploadModal) return;
+
+        uploadModal.classList.add("active");
+
+        document.body.classList.add(
+            "gallery-upload-open"
+        );
+
+    }
+
+
+    function closeUploadModal() {
+
+        if (!uploadModal) return;
+
+        uploadModal.classList.remove(
+            "active"
+        );
+
+        document.body.classList.remove(
+            "gallery-upload-open"
+        );
+
+    }
+
+
+    if (uploadButton) {
+
+    uploadButton.addEventListener(
+        "click",
+        async () => {
+
+            const {
+                data: { session }
+            } = await supabaseClient.auth.getSession();
+
+            if (!session) {
+
+                window.location.href =
+                    "login.html?next=galeri.html";
+
+                return;
+
+            }
+
+            openUploadModal();
+
+        }
+    );
+
+}
+
+
+    if (uploadClose) {
+
+        uploadClose.addEventListener(
+            "click",
+            closeUploadModal
+        );
+
+    }
+
+
+    if (uploadModal) {
+
+        uploadModal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target === uploadModal
+                ) {
+
+                    closeUploadModal();
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================
+       TYPE FOTO / VIDEO
+    ===================================== */
+
+    uploadTypeButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                uploadTypeButtons.forEach(btn => {
+
+                    btn.classList.remove("active");
+
+                });
+
+                button.classList.add("active");
+
+                selectedType =
+                    button.dataset.type || "image";
+
+
+                if (galleryFile) {
+
+                    galleryFile.value = "";
+
+                }
+
+
+                if (galleryFileHint) {
+
+                    if (
+                        selectedType === "video"
+                    ) {
+
+                        galleryFileHint.textContent =
+                            "Pilih video untuk diupload";
+
+                        galleryFile.accept =
+                            "video/*";
+
+                    } else {
+
+                        galleryFileHint.textContent =
+                            "Pilih foto untuk diupload";
+
+                        galleryFile.accept =
+                            "image/*";
+
+                    }
+
+                }
+
+            }
+        );
+
+    });
+
+
+    /* =====================================
+       LOAD GALLERY
     ===================================== */
 
     async function loadGallery() {
@@ -98,23 +331,32 @@ document.addEventListener("DOMContentLoaded", async () => {
         } = await supabaseClient
             .from("gallery")
             .select("*")
-            .order("type", { ascending: true })
-            .order("number", { ascending: true });
+            .order("type", {
+                ascending: true
+            })
+            .order("number", {
+                ascending: true
+            });
 
         if (error) {
 
             console.error(
-                "Gagal mengambil data gallery:",
+                "Gagal mengambil gallery:",
                 error
             );
 
-            showEmpty();
+            showNotification(
+                "Gagal memuat galeri."
+            );
+
+            updateCount();
 
             return;
 
         }
 
-        galleryData = data || [];
+        galleryData =
+            data || [];
 
         renderGallery();
 
@@ -122,197 +364,204 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     /* =====================================
-       RENDER
-    ===================================== */
+   RENDER GALLERY
+===================================== */
 
-    function renderGallery() {
+function renderGallery() {
 
-        galleryGrid.innerHTML = "";
+    galleryGrid.innerHTML = "";
 
-        galleryData.forEach(item => {
+    galleryData.forEach(item => {
 
-            const article =
-                document.createElement("article");
+        const article =
+            document.createElement("article");
 
-            article.className =
-                "gallery-item";
+        article.className =
+            "gallery-item";
 
-            article.dataset.category =
-                item.category || "";
+        article.dataset.category =
+            item.category || "";
 
-            article.dataset.type =
-                item.type || "image";
+        article.dataset.type =
+            item.type || "image";
 
-            article.dataset.title =
-                item.title || "";
+        article.dataset.title =
+            item.title || "";
 
-            article.dataset.description =
-                item.description || "";
+        article.dataset.description =
+            item.description || "";
 
-            article.dataset.src =
-                item.file_url || "";
+        article.dataset.src =
+            item.file_url || "";
 
+        article.dataset.id =
+        item.id;
 
-            /* =================================
-               CARD
-            ================================= */
+        article.dataset.filePath =
+        item.file_path || "";
 
-            const card =
-                document.createElement("div");
 
-            card.className =
-                "gallery-card";
+        /* =================================
+           CARD
+        ================================= */
 
-            card.dataset.type =
-                item.type || "image";
+        const card =
+            document.createElement("div");
 
-            card.dataset.src =
-                item.file_url || "";
+        card.className =
+            "gallery-card";
 
-            card.dataset.title =
-                item.title || "";
+        card.dataset.type =
+            item.type || "image";
 
-            card.dataset.description =
-                item.description || "";
+        card.dataset.src =
+            item.file_url || "";
 
+        card.dataset.title =
+            item.title || "";
 
-            /* =================================
-               MEDIA
-            ================================= */
+        card.dataset.description =
+            item.description || "";
 
-            const media =
-                document.createElement("div");
 
-            media.className =
-                "gallery-media";
+        /* =================================
+           FOTO / VIDEO
+        ================================= */
 
+        const media =
+            document.createElement("div");
 
-            if (item.type === "video") {
+        media.className =
+            "gallery-media";
 
-                const video =
-                    document.createElement("video");
 
-                video.src =
-                    item.file_url;
+        if (item.type === "video") {
 
-                video.muted = true;
+            const video =
+                document.createElement("video");
 
-                video.playsInline = true;
+            video.src =
+                item.file_url;
 
-                video.preload = "metadata";
+            video.muted =
+                true;
 
-                media.appendChild(video);
+            video.playsInline =
+                true;
 
-            } else {
+            video.preload =
+                "metadata";
 
-                const image =
-                    document.createElement("img");
+            media.appendChild(video);
 
-                image.src =
-                    item.file_url;
+        } else {
 
-                image.alt =
-                    item.title || "Foto kenangan";
+            const image =
+                document.createElement("img");
 
-                image.loading = "lazy";
+            image.src =
+                item.file_url;
 
-                media.appendChild(image);
+            image.alt =
+                item.title ||
+                "Foto kenangan";
 
-            }
+            image.loading =
+                "lazy";
 
+            media.appendChild(image);
 
-            /* =================================
-               OVERLAY
-            ================================= */
+        }
 
-            const overlay =
-                document.createElement("div");
 
-            overlay.className =
-                "gallery-overlay";
+        /* =================================
+           NOMOR
+        ================================= */
 
+        const number =
+            document.createElement("span");
 
-            const number =
-                document.createElement("span");
+        number.className =
+            "gallery-number";
 
-            number.className =
-                "gallery-number";
+        number.textContent =
+            String(item.number)
+                .padStart(2, "0");
 
-            number.textContent =
-                String(item.number).padStart(2, "0");
 
+        /* nomor berada DI ATAS FOTO */
 
-            const info =
-                document.createElement("div");
+        media.appendChild(number);
 
-            info.className =
-                "gallery-info";
 
+        /* =================================
+           KOLOM INFORMASI DI BAWAH FOTO
+        ================================= */
 
-            const title =
-                document.createElement("h3");
+        const info =
+            document.createElement("div");
 
-            title.textContent =
-                item.title || "Tanpa judul";
+        info.className =
+            "gallery-info";
 
 
-            const category =
-                document.createElement("p");
+        const title =
+            document.createElement("h3");
 
-            category.textContent =
-                item.category || "";
+        title.textContent =
+            item.title ||
+            "Tanpa judul";
 
 
-            info.appendChild(title);
-            info.appendChild(category);
+        const category =
+            document.createElement("p");
 
-            overlay.appendChild(number);
-            overlay.appendChild(info);
+        category.textContent =
+            item.category ||
+            "";
 
-            card.appendChild(media);
-            card.appendChild(overlay);
 
-            article.appendChild(card);
+        info.appendChild(title);
 
-            galleryGrid.appendChild(article);
+        info.appendChild(category);
 
-        });
 
+        /* =================================
+           MASUKKAN KE CARD
+        ================================= */
 
-        applyFilter();
+        card.appendChild(media);
 
-    }
+        card.appendChild(info);
+
+        article.appendChild(card);
+
+        galleryGrid.appendChild(article);
+
+    });
+
+
+    applyFilter();
+
+}
 
 
     /* =====================================
-       GET VISIBLE ITEMS
-    ===================================== */
-
-    function getVisibleItems() {
-
-        return [
-            ...document.querySelectorAll(".gallery-item")
-        ].filter(item => {
-
-            return !item.classList.contains("hidden");
-
-        });
-
-    }
-
-
-    /* =====================================
-       FILTER + SEARCH
+       FILTER
     ===================================== */
 
     function applyFilter() {
 
         const items = [
-            ...document.querySelectorAll(".gallery-item")
+            ...document.querySelectorAll(
+                ".gallery-item"
+            )
         ];
 
         const keyword =
-            currentSearch.toLowerCase().trim();
+            currentSearch
+                .toLowerCase()
+                .trim();
 
 
         items.forEach(item => {
@@ -330,16 +579,19 @@ document.addEventListener("DOMContentLoaded", async () => {
                 item.dataset.description || "";
 
 
-            /* FILTER */
-
             let filterMatch = true;
 
-            if (currentFilter === "video") {
+
+            if (
+                currentFilter === "video"
+            ) {
 
                 filterMatch =
                     type === "video";
 
-            } else if (currentFilter !== "all") {
+            } else if (
+                currentFilter !== "all"
+            ) {
 
                 filterMatch =
                     category === currentFilter;
@@ -347,9 +599,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
 
-            /* SEARCH */
-
             let searchMatch = true;
+
 
             if (keyword !== "") {
 
@@ -363,7 +614,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     ).toLowerCase();
 
                 searchMatch =
-                    searchable.includes(keyword);
+                    searchable.includes(
+                        keyword
+                    );
 
             }
 
@@ -373,11 +626,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 searchMatch
             ) {
 
-                item.classList.remove("hidden");
+                item.classList.remove(
+                    "hidden"
+                );
 
             } else {
 
-                item.classList.add("hidden");
+                item.classList.add(
+                    "hidden"
+                );
 
             }
 
@@ -395,8 +652,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function updateCount() {
 
-        const visibleItems =
-            getVisibleItems();
+        const visibleItems = [
+            ...document.querySelectorAll(
+                ".gallery-item:not(.hidden)"
+            )
+        ];
 
         if (galleryCount) {
 
@@ -405,15 +665,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
+
         if (galleryEmpty) {
 
-            if (visibleItems.length === 0) {
+            if (
+                visibleItems.length === 0
+            ) {
 
-                galleryEmpty.classList.add("show");
+                galleryEmpty.classList.add(
+                    "show"
+                );
 
             } else {
 
-                galleryEmpty.classList.remove("show");
+                galleryEmpty.classList.remove(
+                    "show"
+                );
 
             }
 
@@ -428,22 +695,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     filterButtons.forEach(button => {
 
-        button.addEventListener("click", () => {
+        button.addEventListener(
+            "click",
+            () => {
 
-            filterButtons.forEach(btn => {
+                filterButtons.forEach(btn => {
 
-                btn.classList.remove("active");
+                    btn.classList.remove(
+                        "active"
+                    );
 
-            });
+                });
 
-            button.classList.add("active");
+                button.classList.add(
+                    "active"
+                );
 
-            currentFilter =
-                button.dataset.filter || "all";
+                currentFilter =
+                    button.dataset.filter ||
+                    "all";
 
-            applyFilter();
+                applyFilter();
 
-        });
+            }
+        );
 
     });
 
@@ -470,13 +745,387 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     /* =====================================
-       OPEN LIGHTBOX
+       GET NEXT NUMBER
     ===================================== */
+
+    async function getNextNumber(type) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("gallery")
+            .select("number")
+            .eq("type", type)
+            .order("number", {
+                ascending: false
+            })
+            .limit(1);
+
+        if (error) {
+
+            console.error(
+                "Gagal mengambil nomor:",
+                error
+            );
+
+            throw error;
+
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            return 1;
+
+        }
+
+
+        return Number(data[0].number) + 1;
+
+    }
+
+
+    /* =====================================
+       UPLOAD
+    ===================================== */
+
+    if (uploadForm) {
+
+        uploadForm.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+
+                const title =
+                    galleryTitle.value.trim();
+
+                const category =
+                    galleryCategory.value;
+
+                const description =
+                    galleryDescription.value.trim();
+
+                const file =
+                    galleryFile.files[0];
+
+
+                if (!title) {
+
+                    showNotification(
+                        "Judul wajib diisi."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!category) {
+
+                    showNotification(
+                        "Kategori wajib dipilih."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!file) {
+
+                    showNotification(
+                        "Pilih file terlebih dahulu."
+                    );
+
+                    return;
+
+                }
+
+
+                /* CEK TIPE FILE */
+
+                if (
+                    selectedType === "image" &&
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ) {
+
+                    showNotification(
+                        "File harus berupa foto."
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    selectedType === "video" &&
+                    !file.type.startsWith(
+                        "video/"
+                    )
+                ) {
+
+                    showNotification(
+                        "File harus berupa video."
+                    );
+
+                    return;
+
+                }
+
+
+                try {
+
+                    gallerySubmitButton.disabled =
+                        true;
+
+                    gallerySubmitButton.innerHTML =
+                        '<i class="bi bi-hourglass-split"></i> Mengupload...';
+
+
+                    /* NOMOR */
+
+                    const number =
+                        await getNextNumber(
+                            selectedType
+                        );
+
+
+                    /* BUCKET */
+
+                    const bucket =
+                        selectedType === "video"
+                            ? "gallery-videos"
+                            : "gallery-images";
+
+
+                    /* FILE NAME */
+
+                    const extension =
+                        file.name
+                            .split(".")
+                            .pop()
+                            .toLowerCase();
+
+
+                    const safeTitle =
+                        title
+                            .toLowerCase()
+                            .replace(
+                                /[^a-z0-9]+/g,
+                                "-"
+                            )
+                            .replace(
+                                /^-+|-+$/g,
+                                ""
+                            );
+
+
+                    const uniqueName =
+                        `${Date.now()}-${safeTitle || "gallery"}.${extension}`;
+
+
+                    const filePath =
+                        `${selectedType}/${uniqueName}`;
+
+
+                    /* UPLOAD STORAGE */
+
+                    const {
+                        error: uploadError
+                    } = await supabaseClient
+                        .storage
+                        .from(bucket)
+                        .upload(
+                            filePath,
+                            file,
+                            {
+                                cacheControl:
+                                    "3600",
+
+                                upsert:
+                                    false
+                            }
+                        );
+
+
+                    if (uploadError) {
+
+                        throw uploadError;
+
+                    }
+
+
+                    /* PUBLIC URL */
+
+                    const {
+                        data: publicUrlData
+                    } = supabaseClient
+                        .storage
+                        .from(bucket)
+                        .getPublicUrl(
+                            filePath
+                        );
+
+
+                    const fileUrl =
+                        publicUrlData
+                            .publicUrl;
+
+
+                    /* SIMPAN DATABASE */
+
+                    const {
+                        error: databaseError
+                    } = await supabaseClient
+                        .from("gallery")
+                        .insert([
+                            {
+                                number:
+                                    number,
+
+                                title:
+                                    title,
+
+                                description:
+                                    description,
+
+                                category:
+                                    category,
+
+                                type:
+                                    selectedType,
+
+                                file_url:
+                                    fileUrl,
+
+                                file_path:
+                                    filePath
+                            }
+                        ]);
+
+
+                    if (databaseError) {
+
+                        /* HAPUS FILE JIKA DB GAGAL */
+
+                        await supabaseClient
+                            .storage
+                            .from(bucket)
+                            .remove([
+                                filePath
+                            ]);
+
+                        throw databaseError;
+
+                    }
+
+
+                    /* BERHASIL */
+
+                    showNotification(
+                        selectedType === "video"
+                            ? "Video berhasil ditambahkan!"
+                            : "Foto berhasil ditambahkan!"
+                    );
+
+
+                    uploadForm.reset();
+
+                    selectedType =
+                        "image";
+
+
+                    uploadTypeButtons.forEach(
+                        button => {
+
+                            button.classList.remove(
+                                "active"
+                            );
+
+                            if (
+                                button.dataset.type ===
+                                "image"
+                            ) {
+
+                                button.classList.add(
+                                    "active"
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+                    galleryFile.accept =
+                        "image/*";
+
+
+                    galleryFileHint.textContent =
+                        "Pilih foto untuk diupload";
+
+
+                    closeUploadModal();
+
+                    await loadGallery();
+
+                } catch (error) {
+
+                    console.error(
+                        "UPLOAD GALLERY ERROR:",
+                        error
+                    );
+
+                    showNotification(
+                        "Upload gagal. Cek Console untuk detail."
+                    );
+
+                } finally {
+
+                    gallerySubmitButton.disabled =
+                        false;
+
+                    gallerySubmitButton.innerHTML =
+                        '<i class="bi bi-cloud-arrow-up"></i> Upload';
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================
+       LIGHTBOX
+    ===================================== */
+
+    function getVisibleCards() {
+
+        return [
+            ...document.querySelectorAll(
+                ".gallery-item:not(.hidden)"
+            )
+        ];
+
+    }
+
 
     function openLightbox(item) {
 
+        currentGalleryItem = item;
+
         const visibleItems =
-            getVisibleItems();
+            getVisibleCards();
 
         currentIndex =
             visibleItems.indexOf(item);
@@ -489,7 +1138,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         showLightboxItem();
 
-        lightbox.classList.add("active");
+        lightbox.classList.add(
+            "active"
+        );
 
         document.body.classList.add(
             "lightbox-open"
@@ -498,16 +1149,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    /* =====================================
-       SHOW LIGHTBOX
-    ===================================== */
-
     function showLightboxItem() {
 
         const visibleItems =
-            getVisibleItems();
+            getVisibleCards();
 
-        if (visibleItems.length === 0) {
+        if (
+            visibleItems.length === 0
+        ) {
 
             return;
 
@@ -535,6 +1184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const item =
             visibleItems[currentIndex];
 
+
         const type =
             item.dataset.type;
 
@@ -554,45 +1204,51 @@ document.addEventListener("DOMContentLoaded", async () => {
             )?.textContent || "";
 
 
-        lightboxMedia.innerHTML = "";
+        lightboxMedia.innerHTML =
+            "";
 
 
-        /* =================================
-           VIDEO
-        ================================= */
-
-        if (type === "video") {
+        if (
+            type === "video"
+        ) {
 
             const video =
-                document.createElement("video");
+                document.createElement(
+                    "video"
+                );
 
-            video.src = src;
+            video.src =
+                src;
 
-            video.controls = true;
+            video.controls =
+                true;
 
-            video.autoplay = true;
+            video.autoplay =
+                true;
 
-            video.playsInline = true;
+            video.playsInline =
+                true;
 
-            lightboxMedia.appendChild(video);
+            lightboxMedia.appendChild(
+                video
+            );
 
-        }
-
-
-        /* =================================
-           IMAGE
-        ================================= */
-
-        else {
+        } else {
 
             const image =
-                document.createElement("img");
+                document.createElement(
+                    "img"
+                );
 
-            image.src = src;
+            image.src =
+                src;
 
-            image.alt = title;
+            image.alt =
+                title;
 
-            lightboxMedia.appendChild(image);
+            lightboxMedia.appendChild(
+                image
+            );
 
         }
 
@@ -609,43 +1265,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    /* =====================================
-       CARD CLICK
-    ===================================== */
+    /* CARD CLICK
+   HANYA AREA FOTO / VIDEO YANG BISA DIBUKA
+*/
 
-    galleryGrid.addEventListener(
-        "click",
-        event => {
+galleryGrid.addEventListener(
+    "click",
+    event => {
 
-            const card =
-                event.target.closest(
-                    ".gallery-card"
-                );
+        const media =
+            event.target.closest(
+                ".gallery-media"
+            );
 
-            if (!card) {
-
-                return;
-
-            }
-
-            const item =
-                card.closest(".gallery-item");
-
-            if (!item) {
-
-                return;
-
-            }
-
-            openLightbox(item);
-
+        if (!media) {
+            return;
         }
-    );
+
+        const item =
+            media.closest(
+                ".gallery-item"
+            );
+
+        if (!item) {
+            return;
+        }
+
+        openLightbox(item);
+
+    }
+);
 
 
-    /* =====================================
-       CLOSE LIGHTBOX
-    ===================================== */
+    /* CLOSE */
 
     function closeLightbox() {
 
@@ -657,10 +1309,255 @@ document.addEventListener("DOMContentLoaded", async () => {
             "lightbox-open"
         );
 
-        lightboxMedia.innerHTML = "";
+        lightboxMedia.innerHTML =
+            "";
 
     }
 
+    /* =====================================
+   DELETE GALLERY
+===================================== */
+
+function openDeleteConfirm() {
+
+    if (!currentGalleryItem) {
+        return;
+    }
+
+    if (!deleteGalleryConfirmModal) {
+        return;
+    }
+
+    deleteGalleryConfirmModal.classList.add("active");
+
+    deleteGalleryConfirmModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+
+function closeDeleteConfirm() {
+
+    if (!deleteGalleryConfirmModal) {
+        return;
+    }
+
+    deleteGalleryConfirmModal.classList.remove("active");
+
+    deleteGalleryConfirmModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+/* TOMBOL HAPUS DI LIGHTBOX */
+
+if (deleteGalleryBtn) {
+
+    deleteGalleryBtn.addEventListener(
+        "click",
+        event => {
+
+            console.log("TOMBOL HAPUS DIKLIK");
+
+            event.stopPropagation();
+
+            openDeleteConfirm();
+
+        }
+    );
+
+}
+
+
+/* BATAL */
+
+if (deleteGalleryCancelBtn) {
+
+    deleteGalleryCancelBtn.addEventListener(
+        "click",
+        event => {
+
+            event.stopPropagation();
+
+            closeDeleteConfirm();
+
+        }
+    );
+
+}
+
+
+/* KONFIRMASI HAPUS */
+
+if (deleteGalleryConfirmBtn) {
+
+    deleteGalleryConfirmBtn.addEventListener(
+        "click",
+        async event => {
+
+            event.stopPropagation();
+
+            if (!currentGalleryItem) {
+                return;
+            }
+
+
+            const id =
+                currentGalleryItem.dataset.id;
+
+            const type =
+                currentGalleryItem.dataset.type;
+
+            const filePath =
+                currentGalleryItem.dataset.filePath;
+
+
+            if (!id) {
+
+                console.error(
+                    "ID gallery tidak ditemukan."
+                );
+
+                showNotification(
+                    "Data galeri tidak ditemukan."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                deleteGalleryConfirmBtn.disabled =
+                    true;
+
+                deleteGalleryConfirmBtn.innerHTML =
+                    "Menghapus...";
+
+
+                /* =================================
+                   BUCKET
+                ================================= */
+
+                const bucket =
+                    type === "video"
+                        ? "gallery-videos"
+                        : "gallery-images";
+
+
+                /* =================================
+                   HAPUS FILE STORAGE
+                ================================= */
+
+                if (filePath) {
+
+                    const {
+                        error: storageError
+                    } = await supabaseClient
+                        .storage
+                        .from(bucket)
+                        .remove([
+                            filePath
+                        ]);
+
+
+                    if (storageError) {
+
+                        console.error(
+                            "Gagal menghapus file Storage:",
+                            storageError
+                        );
+
+                        throw storageError;
+
+                    }
+
+                }
+
+
+                /* =================================
+                   HAPUS DATABASE
+                ================================= */
+
+                const {
+                    error: databaseError
+                } = await supabaseClient
+                    .from("gallery")
+                    .delete()
+                    .eq("id", id);
+
+
+                if (databaseError) {
+
+                    console.error(
+                        "Gagal menghapus database:",
+                        databaseError
+                    );
+
+                    throw databaseError;
+
+                }
+
+
+                /* =================================
+                   BERHASIL
+                ================================= */
+
+                closeDeleteConfirm();
+
+                closeLightbox();
+
+                currentGalleryItem = null;
+
+                showNotification(
+                    "Kenangan berhasil dihapus."
+                );
+
+
+                await loadGallery();
+
+
+            } catch (error) {
+
+                console.error(
+                    "DELETE GALLERY ERROR:",
+                    error
+                );
+
+                showNotification(
+                    "Gagal menghapus kenangan."
+                );
+
+
+            } finally {
+
+                deleteGalleryConfirmBtn.disabled =
+                    false;
+
+                deleteGalleryConfirmBtn.innerHTML = `
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+                        <path d="M4 7h16"></path>
+                        <path d="M9 7V4h6v3"></path>
+                        <path d="M7 7l1 13h8l1-13"></path>
+                    </svg>
+                    Hapus
+                `;
+
+            }
+
+        }
+    );
+
+}
 
     if (lightboxClose) {
 
@@ -679,7 +1576,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             event => {
 
                 if (
-                    event.target === lightbox
+                    event.target ===
+                    lightbox
                 ) {
 
                     closeLightbox();
@@ -692,9 +1590,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    /* =====================================
-       PREVIOUS
-    ===================================== */
+    /* PREV */
 
     if (lightboxPrev) {
 
@@ -714,9 +1610,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    /* =====================================
-       NEXT
-    ===================================== */
+    /* NEXT */
 
     if (lightboxNext) {
 
@@ -736,9 +1630,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    /* =====================================
-       KEYBOARD
-    ===================================== */
+    /* KEYBOARD */
 
     document.addEventListener(
         "keydown",
@@ -755,14 +1647,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
 
-            if (event.key === "Escape") {
+            if (
+                event.key === "Escape"
+            ) {
 
                 closeLightbox();
 
             }
 
 
-            if (event.key === "ArrowLeft") {
+            if (
+                event.key === "ArrowLeft"
+            ) {
 
                 currentIndex--;
 
@@ -771,7 +1667,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
 
-            if (event.key === "ArrowRight") {
+            if (
+                event.key === "ArrowRight"
+            ) {
 
                 currentIndex++;
 

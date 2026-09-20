@@ -672,12 +672,12 @@ document.addEventListener(
 
             if (!session) {
 
-                window.location.href =
-                    "login.html";
+    window.location.href =
+        "login.html?next=memori.html";
 
-                return;
+    return;
 
-            }
+}
 
             addModal.classList.add(
                 "active"
@@ -860,12 +860,12 @@ document.addEventListener(
 
             if (!session) {
 
-                window.location.href =
-                    "login.html";
+    window.location.href =
+        "login.html?next=memori.html";
 
-                return;
+    return;
 
-            }
+}
 
 
             /* =================================

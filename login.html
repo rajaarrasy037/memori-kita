@@ -387,19 +387,37 @@
 
         async function checkSession() {
 
-            const {
-                data: {
-                    session
-                }
-            } = await supabaseClient.auth.getSession();
-
-            if (session) {
-
-                window.location.href = "memori.html";
-
-            }
-
+    const {
+        data: {
+            session
         }
+    } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+        return;
+    }
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const next =
+        params.get("next");
+
+    if (next) {
+
+        window.location.href =
+            next;
+
+    } else {
+
+        window.location.href =
+            "memori.html";
+
+    }
+
+}
 
 
         /* =========================================
@@ -488,10 +506,23 @@
 
                     setTimeout(function() {
 
-                        window.location.href =
-                            "memori.html";
+    const params = new URLSearchParams(
+        window.location.search
+    );
 
-                    }, 700);
+    const next = params.get("next");
+
+    if (next) {
+
+        window.location.href = next;
+
+    } else {
+
+        window.location.href = "memori.html";
+
+    }
+
+}, 700);
 
 
                 } catch (error) {
