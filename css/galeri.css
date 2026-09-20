@@ -891,3 +891,48 @@ body:has(.gallery-upload-modal.active) {
     font-size: 13px !important;
     pointer-events: none !important;
 }
+
+@media (max-width: 768px) {
+    .delete-gallery-btn {
+        position: fixed !important;
+        left: 50% !important;
+        bottom: 20px !important;
+        transform: translateX(-50%) !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+
+        width: auto !important;
+        min-width: 150px !important;
+        height: 46px !important;
+        padding: 0 18px !important;
+
+        z-index: 999999 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .delete-gallery-btn svg {
+        width: 18px !important;
+        height: 18px !important;
+        flex-shrink: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .lightbox {
+        overflow: visible !important;
+    }
+
+    .lightbox-content {
+        overflow: visible !important;
+    }
+
+    #deleteGalleryBtn {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
