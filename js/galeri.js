@@ -1122,32 +1122,87 @@ function renderGallery() {
 
     function openLightbox(item) {
 
-        currentGalleryItem = item;
+    currentGalleryItem = item;
 
-        const visibleItems =
-            getVisibleCards();
+    const visibleItems = getVisibleCards();
 
-        currentIndex =
-            visibleItems.indexOf(item);
+    currentIndex = visibleItems.indexOf(item);
 
-        if (currentIndex < 0) {
-
-            currentIndex = 0;
-
-        }
-
-        showLightboxItem();
-
-        lightbox.classList.add(
-            "active"
-        );
-
-        document.body.classList.add(
-            "lightbox-open"
-        );
-
+    if (currentIndex < 0) {
+        currentIndex = 0;
     }
 
+    /* TAMPILKAN LIGHTBOX DULU */
+    lightbox.classList.add("active");
+    document.body.classList.add("lightbox-open");
+
+    /* TAMPILKAN TOMBOL HAPUS */
+    if (deleteGalleryBtn) {
+
+        deleteGalleryBtn.style.setProperty(
+            "display",
+            "inline-flex",
+            "important"
+        );
+
+        deleteGalleryBtn.style.setProperty(
+            "visibility",
+            "visible",
+            "important"
+        );
+
+        deleteGalleryBtn.style.setProperty(
+            "opacity",
+            "1",
+            "important"
+        );
+
+        deleteGalleryBtn.style.setProperty(
+            "pointer-events",
+            "auto",
+            "important"
+        );
+
+        deleteGalleryBtn.style.setProperty(
+            "position",
+            "fixed",
+            "important"
+        );
+
+        deleteGalleryBtn.style.setProperty(
+            "left",
+            "50%",
+            "important"
+        );
+
+        deleteGalleryBtn.style.setProperty(
+            "bottom",
+            "18px",
+            "important"
+        );
+
+        deleteGalleryBtn.style.setProperty(
+            "transform",
+            "translateX(-50%)",
+            "important"
+        );
+
+        deleteGalleryBtn.style.setProperty(
+            "z-index",
+            "2147483647",
+            "important"
+        );
+
+        console.log(
+            "DELETE BUTTON STYLE:",
+            getComputedStyle(deleteGalleryBtn).display,
+            getComputedStyle(deleteGalleryBtn).visibility,
+            getComputedStyle(deleteGalleryBtn).opacity
+        );
+    }
+
+    showLightboxItem();
+}
 
     function showLightboxItem() {
 
@@ -1301,18 +1356,23 @@ galleryGrid.addEventListener(
 
     function closeLightbox() {
 
-        lightbox.classList.remove(
-            "active"
-        );
+    lightbox.classList.remove("active");
 
-        document.body.classList.remove(
-            "lightbox-open"
-        );
+    document.body.classList.remove("lightbox-open");
 
-        lightboxMedia.innerHTML =
-            "";
+    lightboxMedia.innerHTML = "";
+
+    currentGalleryItem = null;
+
+    /* SEMBUNYIKAN TOMBOL HAPUS */
+
+    if (deleteGalleryBtn) {
+
+        deleteGalleryBtn.style.display = "none";
 
     }
+
+}
 
     /* =====================================
    DELETE GALLERY
@@ -1688,4 +1748,3 @@ if (deleteGalleryConfirmBtn) {
     await loadGallery();
 
 });
-
